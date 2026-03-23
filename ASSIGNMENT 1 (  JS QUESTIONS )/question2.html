@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 2</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        .quesHolder{
+            color: white;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
+        .Btn{
+            border: 2px solid greenyellow;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <div class="container">
+            <div class="quesHolder">
+                Q : WHAT IS <div class="need1"></div> + <div class="need2"></div>?
+            </div>
+            <div class="inputBox">
+                <input type="text" class="fielder" >
+            </div>
+            <button class="Btn">Submit</button>
+        </div>
+    </form>
+    <script src="question2.js"></script>
+</body>
+</html>

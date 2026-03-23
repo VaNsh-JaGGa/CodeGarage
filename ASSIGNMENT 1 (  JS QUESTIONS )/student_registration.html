@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESUME</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            /* display: flex; */
+            /* gap: 20px; */
+            /* flex-direction: column; */
+            background-image: url("https://img.freepik.com/free-photo/top-view-business-office-desk-background-applying-job-form-pen-pencil-eyeglasses-tree-wooden-table-background-with-copy-space_1921-21.jpg");
+            height: 100vh;
+            /* width: 100vw; */
+            overflow: none;
+            padding: 3rem;
+        }
+
+        .head {
+            margin-bottom: 1.5rem;
+            width: 20rem;
+        }
+
+        .formhead {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            width: 14rem;
+            font-size: 18px;
+        }
+
+        label {
+            margin-right: 10px;
+            /* margin-bottom:10px; */
+        }
+
+        .radiation {
+            margin-bottom: 1.2rem;
+        }
+
+        .SubmitBtn {
+            background-color: black;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            width: 7rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1 class="head">Registration Form</h1>
+        <form action="submit" class="formhead" id="yourFormId">
+
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" class="firstName" placeholder="Enter Your First Name"> <br>
+
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" class="lastName" placeholder="Enter Your Last Name"> <br>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" class="Regexx" placeholder="Enter Your Email"><br>
+
+            <label for="phNo">Phone Number</label>
+            <input type="tel" id="phNo" class="phoneRegex" maxlength="10" placeholder="Enter Your Ph No:" ><br>
+
+            <label for="DOB">Date of Birth</label>
+            <input type="date" id="DOB" class="date lastTry"> <br>
+
+            <div class="radiation">
+                <input type="radio" name="gender" id="male"> <label for="male">Male</label> <br>
+                <input type="radio" name="gender" id="female"> <label for="female">Female</label> <br>
+                <input type="radio" name="gender" id="other"> <label for="other">other</label>
+            </div>
+
+            <select name="Course" id="Course" class="radiation">
+                <option value="course">Math</option>
+                <option value="course">Science</option>
+                <option value="course">English</option>
+            </select>
+
+            <div class="radiation">
+                <label for="agreement">Agreement</label> <input type="checkbox" id="agreement" class="agg" value="">
+            </div>
+
+            <button class="SubmitBtn" type="submit">Submit</button>
+
+        </form>
+
+    </div>
+    <script src="student_registration.js"></script>
+</body>
+
+</html>

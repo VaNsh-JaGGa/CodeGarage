@@ -1,0 +1,53 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container{
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  color: white;
+  border: 2px solid red;
+  padding: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 80px;
+}
+.add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: pink;
+  height: 200px;
+  width: 200px;
+}
+.Btn{
+  background-color: pink;
+  outline: none;
+  height: 200px;
+  width: 200px;
+  font-size: 2rem;
+}
+.subtract{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 11, 52);
+  height: 200px;
+  width: 200px;
+}
+.shower{
+   background-color: pink;
+  outline: none;
+  height: 200px;
+  width: 200px;
+  color: black;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

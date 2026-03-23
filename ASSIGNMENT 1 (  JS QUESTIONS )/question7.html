@@ -1,0 +1,75 @@
+<!-- 7. Make your resume in HTML format.​
+ - Add a button to show hide the education table.​
+ - Add a button to change the background of the CV to red.​
+ - Add a button to remove the education details from the CV -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resume</title>
+    <style>
+        *{
+            margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    table,th,td{
+        border: 2px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+        margin-right: auto;
+    }
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    </style>
+    </head>
+<body>
+    <div class="container">
+        <h1>Vansh</h1>
+        <h2>Email : vanshjagga66@gmail.com</h3>
+        <h4>ph no: +91 93062-52674</h6>
+
+        <table class="educationTable">
+          <tr>
+            <th>Name</th>
+            <th>class</th>
+            <th>roll no</th>
+          </tr>
+            <tr>
+                <td>vansh</td>
+                <td>BCA</td>
+                <td>24</td>
+            </tr>
+
+            <tr>
+                <td>Radhika</td>
+                <td>BCA</td>
+                <td>42</td>
+            </tr>
+        </table>
+
+        <div>
+            <button onclick = "changeBG()" class="button2">Change Background</button>
+        </div>
+
+        <div>
+            <button onclick = "changeVisibility()" class="button2">HIDE Education Table</button>
+        </div>
+
+         <div>
+            <button onclick = "hideEducationDetails()" class="button2">remove education details</button>
+        </div>
+
+    </div>
+<script src="question7.js" ></script>
+
+</body>
+</html>

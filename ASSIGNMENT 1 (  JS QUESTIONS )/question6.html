@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+    }
+    .container{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        background: #000;
+    }
+    .Btn{
+        background: #000;
+        color: white;
+        height: 1.4rem;
+        width: 6rem;
+        border: 2px solid skyblue;
+    }
+</style>
+<body>
+
+    <div class="container">
+        <button class="Btn pp" onclick="previousPage()">previous URL</button>
+        <button class="Btn np" onclick="nextPage()">next URL</button>
+    </div>
+    <script src="question6.js">
+
+    </script>
+</body>
+</html>
