@@ -2,7 +2,6 @@ const FullName = (props) => {
     return (
         <div className="relative h-[52px] mb-[20px]">
 
-            {/* Top Label */}
             <label
                 htmlFor="full"
                 className="absolute top-[-25px] text-sm font-medium"
@@ -10,7 +9,6 @@ const FullName = (props) => {
                 Full Name
             </label>
 
-            {/* Input */}
             <input
                 type="text"
                 id="full"
@@ -25,7 +23,6 @@ const FullName = (props) => {
                 }`}
             />
 
-            {/* Floating Label */}
             <label
                 htmlFor="full"
                 className={`absolute left-3 px-1 transition-all pointer-events-none
@@ -46,7 +43,6 @@ const FullName = (props) => {
                 Full Name <span className="text-red-500">*</span>
             </label>
 
-            {/* Error */}
             {props.errors.fullNameValue && (
                 <span className="text-red-500 text-xs mt-1">
                     Full Name is Wrong

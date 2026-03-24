@@ -18,21 +18,19 @@ const BirthDate = (props) => {
     return (
         <div className="flex flex-col gap-1 mb-[20px]">
 
-            {/* Label */}
             <label className="text-sm font-medium">
                 Birthdate
             </label>
 
             <div className="flex gap-3">
 
-                {/* Day */}
                 <select
                     name="day"
                     value={props.formData.day}
                     onChange={props.onChangeHandler}
                     className={`${props.errors.day
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-[#A5B6CD] focus:border-blue-500"} 
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#A5B6CD] focus:border-blue-500"} 
                     w-1/3 h-[40px] border-2 rounded-md px-2`}
                 >
                     <option value="">Day *</option>
@@ -54,14 +52,13 @@ const BirthDate = (props) => {
                     })}
                 </select>
 
-                {/* Month */}
                 <select
                     name="month"
                     value={props.formData.month}
                     onChange={props.onChangeHandler}
                     className={`${props.errors.month
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-[#A5B6CD] focus:border-blue-500"} 
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#A5B6CD] focus:border-blue-500"} 
                     w-1/3 h-[40px] border-2 rounded-md px-2`}
                 >
                     <option value="">Month *</option>
@@ -87,14 +84,13 @@ const BirthDate = (props) => {
                         })}
                 </select>
 
-                {/* Year */}
                 <select
                     name="year"
                     value={props.formData.year}
                     onChange={props.onChangeHandler}
                     className={`${props.errors.year
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-[#A5B6CD]  focus:border-blue-500"} 
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#A5B6CD]  focus:border-blue-500"} 
                     w-1/3 h-[40px] border-2 rounded-md px-2`}
                 >
                     <option value="">Year *</option>

@@ -2,7 +2,6 @@ const ConfirmPassword = (props) => {
     return (
         <div className="relative">
 
-            {/* Top Label */}
             <label
                 htmlFor="cpp"
                 className="absolute top-[-25px] text-sm font-medium"
@@ -10,7 +9,6 @@ const ConfirmPassword = (props) => {
                 Confirm Password
             </label>
 
-            {/* Input */}
             <input
                 type="password"
                 id="cpp"
@@ -25,29 +23,27 @@ const ConfirmPassword = (props) => {
                     }`}
             />
 
-            {/* Floating Label */}
             <label
                 htmlFor="cpp"
                 className={`absolute left-3 px-1 transition-all pointer-events-none
-    ${props.errors.confirmPasswordValue
-                        ? "text-red-500"
-                        : "text-gray-500"}
+                ${props.errors.confirmPasswordValue
+                ? "text-red-500"
+                : "text-gray-500"}
     
-    top-[10px] text-base
-    peer-placeholder-shown:top-[10px]
-    peer-placeholder-shown:text-base
+                top-[10px] text-base
+                peer-placeholder-shown:top-[10px]
+                peer-placeholder-shown:text-base
     
-    peer-focus:top-[-8px]
-    peer-focus:text-xs
+                peer-focus:top-[-8px]
+                peer-focus:text-xs
     
-    peer-not-placeholder-shown:top-[-8px]
-    peer-not-placeholder-shown:text-xs
-    ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}`}
+                peer-not-placeholder-shown:top-[-8px]
+                peer-not-placeholder-shown:text-xs
+                ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}`}
             >
                 Confirm Password <span className="text-red-500">*</span>
             </label>
 
-            {/* Error */}
             {props.errors.confirmPasswordValue && (
                 <span className="text-red-500 text-xs mt-1">
                     Passwords do not match

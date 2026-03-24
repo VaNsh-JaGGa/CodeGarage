@@ -30,7 +30,6 @@ const Form = ({darkMode}) => {
   const name = e.target.name;
   const value = e.target.value;
 
-  // Input restrictions
   if (name === "fullNameValue" && value[0] === " ") return;
 
   if (name === "contactNumberValue") {
@@ -38,19 +37,16 @@ const Form = ({darkMode}) => {
     if (value.length > 10) return;
   }
 
-  // Update form
   setFormData((prev) => ({
     ...prev,
     [name]: value,
   }));
 
-  // Validate using utils
   const newErrors = validateField(name, value, {
     ...formData,
     [name]: value,
   });
 
-  // Update errors
   setErrors((prev) => ({
     ...prev,
     ...newErrors,

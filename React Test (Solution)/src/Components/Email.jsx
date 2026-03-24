@@ -27,8 +27,8 @@ const Email = (props) => {
                 htmlFor="ead"
                 className={`absolute left-3 px-1 transition-all pointer-events-none
                 ${props.errors.emailValue
-                        ? "text-red-500"
-                        : "text-gray-500"}
+                ? "text-red-500"
+                : "text-gray-500"}
     
                 top-[10px] text-base
                 peer-placeholder-shown:top-[10px]
