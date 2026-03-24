@@ -32,7 +32,10 @@ const Password = (props) => {
                 ${props.errors.passwordValue
                         ? "border-red-500 focus:border-red-500"
                         : "border-[#A5B6CD] focus:border-blue-500"
-                    }`}
+                    }
+                    
+                    
+                    `}
             />
 
             {/* Eye Button */}
