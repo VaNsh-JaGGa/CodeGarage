@@ -27,16 +27,7 @@ const FullName = (props) => {
                 htmlFor="full"
                 className={`absolute left-3 px-1 transition-all pointer-events-none
                 ${props.errors.fullNameValue ? "text-red-500" : "text-gray-500"}
-    
-                top-[10px] text-base
-                peer-placeholder-shown:top-[10px]
-                peer-placeholder-shown:text-base
-    
-                peer-focus:top-[-8px]
-                peer-focus:text-xs
-    
-                peer-not-placeholder-shown:top-[-8px]
-                peer-not-placeholder-shown:text-xs
+                floating-label
                 ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}
                 `}
             >

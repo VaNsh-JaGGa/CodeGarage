@@ -10,3 +10,15 @@
     display: none !important;
   }
 }
+
+@layer components {
+  .floating-label {
+    @apply top-[10px] text-base
+      peer-placeholder-shown:top-[10px]
+      peer-placeholder-shown:text-base
+      peer-focus:top-[-8px]
+      peer-focus:text-xs
+      peer-not-placeholder-shown:top-[-8px]
+      peer-not-placeholder-shown:text-xs;
+  }
+}
