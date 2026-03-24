@@ -28,8 +28,8 @@ const Contact = (props) => {
       {/* Floating Label */}
       <label
         htmlFor="cn"
-        className={`absolute left-3 px-1 transition-all pointer-events-none bg-white
-  ${props.errors.contactNumberValue
+        className={`absolute left-3 px-1 transition-all pointer-events-none
+        ${props.errors.contactNumberValue
             ? "text-red-500"
             : "text-gray-500"}
   
@@ -42,6 +42,7 @@ const Contact = (props) => {
   
   peer-not-placeholder-shown:top-[-8px]
   peer-not-placeholder-shown:text-xs
+${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}
   `}
       >
         Contact Number <span className="text-red-500">*</span>

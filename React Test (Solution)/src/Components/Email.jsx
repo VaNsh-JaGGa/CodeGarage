@@ -2,7 +2,6 @@ const Email = (props) => {
     return (
         <div className="relative h-[50px] mb-[20px]">
 
-            {/* Top Label */}
             <label
                 htmlFor="ead"
                 className="absolute top-[-25px] text-sm font-medium"
@@ -10,7 +9,6 @@ const Email = (props) => {
                 Email
             </label>
 
-            {/* Input */}
             <input
                 type="email"
                 id="ead"
@@ -25,24 +23,24 @@ const Email = (props) => {
                     }`}
             />
 
-            {/* Floating Label */}
             <label
                 htmlFor="ead"
-                className={`absolute left-3 px-1 transition-all pointer-events-none bg-white
-    ${props.errors.emailValue
+                className={`absolute left-3 px-1 transition-all pointer-events-none
+                ${props.errors.emailValue
                         ? "text-red-500"
                         : "text-gray-500"}
     
-    top-[10px] text-base
-    peer-placeholder-shown:top-[10px]
-    peer-placeholder-shown:text-base
+                top-[10px] text-base
+                peer-placeholder-shown:top-[10px]
+                peer-placeholder-shown:text-base
     
-    peer-focus:top-[-8px]
-    peer-focus:text-xs
+                peer-focus:top-[-8px]
+                peer-focus:text-xs
     
-    peer-not-placeholder-shown:top-[-8px]
-    peer-not-placeholder-shown:text-xs
-    `}
+                peer-not-placeholder-shown:top-[-8px]
+                peer-not-placeholder-shown:text-xs
+                ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}
+                `}
             >
                 Email Address <span className="text-red-500">*</span>
             </label>

@@ -42,7 +42,7 @@ const ConfirmPassword = (props) => {
     
     peer-not-placeholder-shown:top-[-8px]
     peer-not-placeholder-shown:text-xs
-    bg-white`}
+    ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}`}
             >
                 Confirm Password <span className="text-red-500">*</span>
             </label>

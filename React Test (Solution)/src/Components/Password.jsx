@@ -50,7 +50,7 @@ const Password = (props) => {
             {/* Floating Label */}
             <label
                 htmlFor="pp"
-                className={`absolute left-3 px-1 transition-all pointer-events-none bg-white
+                className={`absolute left-3 px-1 transition-all pointer-events-none 
                         ${props.errors.passwordValue
                         ? "text-red-500"
                         : "text-gray-500"}
@@ -64,6 +64,7 @@ const Password = (props) => {
     
                         peer-not-placeholder-shown:top-[-8px]
                         peer-not-placeholder-shown:text-xs
+                        ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}
                   `}
             >
                 Password <span className="text-red-500">*</span>

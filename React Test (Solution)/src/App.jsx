@@ -1,24 +1,24 @@
 
-import NavBar from "./Components/NavBar"
+import NavBar from "./Common/NavBar";
 import Form from "./Components/Form"
 import { useEffect, useState } from "react";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
-  useEffect(() => {
+    useEffect(() => {
     if (darkMode) {
-      document.documentElement.classList.add("dark");
-      console.log("now to dark");
+      document.body.classList.add("bg-gray-950", "text-white");
+      document.body.classList.remove("bg-white", "text-black");
     } else {
-      document.documentElement.classList.remove("dark");
-      console.log("now to not dark");
+      document.body.classList.add("bg-white", "text-black");
+      document.body.classList.remove("bg-gray-950", "text-white");
     }
   }, [darkMode]);
 
   return (
     <>
       <NavBar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <Form />
+      <Form darkMode={darkMode} />
     </>
   )
 }

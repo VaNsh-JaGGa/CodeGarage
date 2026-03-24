@@ -9,7 +9,7 @@ import ConfirmPassword from "./ConfirmPassword";
 import ResetBtn from "./ResetBtn";
 import Submit from "./submit";
 
-const Form = () => {
+const Form = ({darkMode}) => {
 
     const [formData, setFormData] = useState({
         fullNameValue: "",
@@ -42,7 +42,6 @@ const Form = () => {
                 return;
             }
         }
-
 
         if (e.target.name === "contactNumberValue") {
             let phoneRA = /^\d*$/;
@@ -356,9 +355,9 @@ const Form = () => {
             )}
             <form onSubmit={submitHandler}>
 
-                <div className="max-w-[450px] max-h-[600px] w-full mx-auto 
+                <div className={`max-w-[450px] max-h-[600px] w-full mx-auto 
 
-                flex flex-col gap-4 mt-6 px-4">
+                flex flex-col gap-4 mt-6 px-4 ${darkMode ? "bg-gray-700 text-white" : ""}`}>
 
                     <div className="text-xl font-semibold max-w-[450px] ">
                         Create User Account
@@ -367,17 +366,17 @@ const Form = () => {
                     <div className="w-full flex flex-col p-6 gap-5 h-[710px] 
                     shadow-xl/20 rounded-sm">
 
-                        <FullName errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <FullName errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
-                        <Contact errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <Contact errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
-                        <BirthDate errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <BirthDate errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
-                        <Email errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <Email errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
-                        <Password errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <Password errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
-                        <ConfirmPassword errors={errors} formData={formData} onChangeHandler={valueChanger} />
+                        <ConfirmPassword errors={errors} formData={formData} onChangeHandler={valueChanger} darkMode={darkMode} />
 
 
                         {width <= 400 && (

@@ -20,27 +20,28 @@ const FullName = (props) => {
                 onChange={props.onChangeHandler}
                 className={`peer w-full h-[40px] border-2 rounded-md pl-3 outline-none transition
                 ${props.errors.fullNameValue
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-[#A5B6CD]  focus:border-blue-500"
-                    }`}
+                ? "border-red-500 focus:border-red-500"
+                : "border-[#A5B6CD]  focus:border-blue-500"
+                }`}
             />
 
             {/* Floating Label */}
             <label
                 htmlFor="full"
-                className={`absolute left-3 px-1 transition-all pointer-events-none bg-white
-    ${props.errors.fullNameValue ? "text-red-500" : "text-gray-500"}
+                className={`absolute left-3 px-1 transition-all pointer-events-none
+                ${props.errors.fullNameValue ? "text-red-500" : "text-gray-500"}
     
-    top-[10px] text-base
-    peer-placeholder-shown:top-[10px]
-    peer-placeholder-shown:text-base
+                top-[10px] text-base
+                peer-placeholder-shown:top-[10px]
+                peer-placeholder-shown:text-base
     
-    peer-focus:top-[-8px]
-    peer-focus:text-xs
+                peer-focus:top-[-8px]
+                peer-focus:text-xs
     
-    peer-not-placeholder-shown:top-[-8px]
-    peer-not-placeholder-shown:text-xs
-    `}
+                peer-not-placeholder-shown:top-[-8px]
+                peer-not-placeholder-shown:text-xs
+                ${props.darkMode ? "bg-gray-700 text-white" : "bg-white"}
+                `}
             >
                 Full Name <span className="text-red-500">*</span>
             </label>
