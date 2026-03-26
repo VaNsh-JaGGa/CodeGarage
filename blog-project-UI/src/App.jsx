@@ -2,21 +2,23 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import ProtectedRoute from "./components/protectedRoute";
+import AddBlog from "./components/AddBlog"
 const router = createBrowserRouter(
   [
     {
       path:"/home",
       element:
-      <div>
+      <ProtectedRoute>
         <Home />
-      </div>
+      </ProtectedRoute>
     },
     {
       path:"/",
       element:
-      <div>
+      <>
         <Login />
-      </div>
+      </>
     },
     {
       path:"/signup",
@@ -24,17 +26,23 @@ const router = createBrowserRouter(
       <div>
         <Signup />
       </div>
+    },
+    {
+      path: "/addblog",
+      element:
+        <ProtectedRoute>
+          <AddBlog />
+        </ProtectedRoute>
     }
   ]
-);
+)
 
 const App = () => {
   return (
     <div>
       <RouterProvider router ={router}/>
-      app.jsx
     </div>
   )
-}
+};
 
 export default App

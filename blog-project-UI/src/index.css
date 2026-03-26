@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@layer components {
+    .floating-label {
+        @apply top-[22px] text-base peer-placeholder-shown:top-[38px] peer-placeholder-shown:text-base peer-focus:top-[22px] peer-focus:text-xs peer-not-placeholder-shown:top-[22px] peer-not-placeholder-shown:text-xs;
+    }
+}
