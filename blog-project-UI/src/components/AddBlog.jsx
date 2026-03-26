@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useState } from "react";
 
 const AddBlog = () => {
 
@@ -109,15 +109,15 @@ const AddBlog = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center px-4">
-            <div className="bg-white w-full max-w-2xl p-8 rounded-lg shadow-md">
+        <div className="min-h-screen bg-[#efefef] flex items-center justify-center px-4">
+            <div className="bg-white w-full max-w-2xl p-8 my-2 rounded-lg shadow-md">
 
                 <h2 className="text-2xl font-bold text-center mb-6">Add New Blog</h2>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                     {/* Image */}
-                    <div className="flex flex-col gap-1">
+                    <div className="relative flex flex-col gap-1">
                         <label for="img">Image URL</label>
                         <input
                             type="text"
@@ -125,13 +125,22 @@ const AddBlog = () => {
                             name="image"
                             value={form.image}
                             onChange={handleChange}
-                            placeholder="Image URL"
-                            className="border p-2 rounded"
+                            placeholder=" "
+                            className="peer border p-2 rounded"
                         />
                         {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
+                        <label
+                            for="email"
+                            className={`absolute left-3 px-1 transition-all pointer-events-none
+                            ${errors.image ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
+                            floating-label
+                `}
+                        >
+                            Enter URL <span className="text-red-500">*</span>
+                        </label>
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 relative">
                         <label for="tit">Title</label>
                         <input
                             type="text"
@@ -139,13 +148,22 @@ const AddBlog = () => {
                             name="title"
                             value={form.title}
                             onChange={handleChange}
-                            placeholder="Title"
-                            className="border p-2 rounded mr-6"
+                            placeholder=" "
+                            className="peer border p-2 rounded"
                         />
                         {errors.title && <span className="text-red-500 text-sm">{errors.title}</span>}
+                        <label
+                            for="email"
+                            className={`absolute left-3 px-1 transition-all pointer-events-none
+                            ${errors.title ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
+                            floating-label
+                            `}
+                        >
+                            Enter Title <span className="text-red-500">*</span>
+                        </label>
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 relative">
                         <label for="cate">Category</label>
                         <input
                             type="text"
@@ -153,13 +171,22 @@ const AddBlog = () => {
                             name="category"
                             value={form.category}
                             onChange={handleChange}
-                            placeholder="Category"
-                            className="border p-2 rounded mr-6"
+                            placeholder=" "
+                            className="peer border p-2 rounded"
                         />
                         {errors.category && <span className="text-red-500 text-sm">{errors.category}</span>}
+                        <label
+                            for="email"
+                            className={`absolute left-3 px-1 transition-all pointer-events-none
+                            ${errors.category ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
+                            floating-label
+                            `}
+                        >
+                            Enter Category <span className="text-red-500">*</span>
+                        </label>
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex relative flex-col gap-1">
                         <label for="desc">Description</label>
                         <textarea
                             name="description"
@@ -168,10 +195,19 @@ const AddBlog = () => {
                             id="desc"
                             rows={4}
                             onChange={handleChange}
-                            placeholder="Description"
-                            className="border p-2 rounded"
+                            placeholder=" "
+                            className="peer border p-2 rounded"
                         />
                         {errors.description && <span className="text-red-500 text-sm">{errors.description}</span>}
+                        <label
+                            for="email"
+                            className={`absolute left-3 px-1 transition-all pointer-events-none
+                            ${errors.description ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
+                            floating-label
+                            `}
+                        >
+                            Enter Description <span className="text-red-500">*</span>
+                        </label>
                     </div>
 
                     <button className="bg-blue-500 text-white p-2 rounded">

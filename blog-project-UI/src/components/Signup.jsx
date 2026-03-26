@@ -78,10 +78,10 @@ const Signup = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-black">
+      <div className="flex justify-center items-center h-screen bg-[#efefef]">
         <Toaster />
         <form
-          className="flex flex-col gap-4 bg-white p-8 rounded-lg w-80"
+          className="flex flex-col gap-4 bg-white p-8 m-8 rounded-lg w-[24rem]"
         >
 
           <h1 className="text-2xl font-bold text-center">Signup</h1>

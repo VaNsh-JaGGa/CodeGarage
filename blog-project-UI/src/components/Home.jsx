@@ -13,47 +13,47 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 px-10 py-6">
+    <div className="min-h-screen bg-[#efefef]">
 
-      <div className="relative mb-30">
-
-        {/* Logout */}
-        <button
-          className="absolute right-0 top-0 bg-black text-pink-500 px-6 py-2 rounded text-lg font-medium cursor-pointer"
-          onClick={() => {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("currentUser");
-            navi("/");
-          }}
-        >
-          Log Out
-        </button>
-
-        {/* Add Blog */}
-        <button
-          className="absolute right-[9rem] top-0 bg-black text-pink-500 px-6 py-2 rounded text-lg font-medium cursor-pointer"
-          onClick={() => {
-            navi("/addblog");
-          }}
-        >
-          Add Blog
-        </button>
+      <div className=" flex flex-col gap-[2.5rem] sm:flex-row sm:justify-between  sm:gap-[1rem] relative mb-30 bg-[#efefef] px-10 py-5">
 
         <div className="text-center">
-          <p className="text-pink-500 text-lg font-medium">
+          <p className="text-black text-lg font-medium">
             My Recent Posts
           </p>
-          <h1 className="text-4xl font-bold">My Blog</h1>
+          <h1 className="text-4xl font-bold text-black">My Blog</h1>
         </div>
+
+        <div className="flex flex-col gap-8 sm:flex-row sm:gap-15">
+          <button
+            className=" text-black-500 px-6 py-2 rounded text-xl font-bold cursor-pointer border-2 border-black sm:border-none"
+            onClick={() => {
+              navi("/addblog");
+            }}
+          >
+            Add Blog
+          </button>
+          <button
+            className=" text-black px-6 py-2 rounded text-xl font-bold cursor-pointer border-2 border-black sm:border-none"
+            onClick={() => {
+              localStorage.removeItem("isLoggedIn");
+              localStorage.removeItem("currentUser");
+              navi("/");
+            }}
+          >
+            Log Out
+          </button>
+
+        </div>
+
       </div>
 
-      {/* 🔹 If no blogs */}
       {blogs.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">
+        <p className="text-center text-gray-500 text-lg py-6">
           No blogs available
         </p>
       ) : (
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-3 px-10">
 
           {blogs.map((item, i) => (
             <div key={i} className="bg-white shadow-md">
