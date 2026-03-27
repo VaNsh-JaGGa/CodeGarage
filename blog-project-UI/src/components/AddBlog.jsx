@@ -1,13 +1,28 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 const AddBlog = () => {
 
+
+    const navi = useNavigate();
+    const { id } = useParams();
     const [form, setForm] = useState({
         image: "",
         title: "",
         category: "",
         description: ""
     });
+
+    useEffect(() => {
+        const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+
+        if (id !== undefined) {
+            setForm(blogs[Number(id)]);
+        }
+    }, [id]);
 
     const [errors, setErrors] = useState({});
 
@@ -91,12 +106,16 @@ const AddBlog = () => {
                 ...form,
                 date: new Date().toDateString()
             };
-            const updatedBlogs = [...existingBlogs, newBlog];
-            localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
-            window.location.href = "/home";
+            if (id !== undefined) {
+                existingBlogs[Number(id)] = newBlog;
+            } else {
+                existingBlogs.push(newBlog);
+            }
+            localStorage.setItem("blogs", JSON.stringify(existingBlogs));
+            navi('/home');
         }
     };
-
+    // nodejs , express , postgress , sqlize
     return (
         <div className="min-h-screen bg-[#efefef] flex items-center justify-center px-4">
             <div className="bg-white w-full max-w-2xl p-8 my-2 rounded-lg shadow-md">

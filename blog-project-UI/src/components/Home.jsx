@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 
 const Home = () => {
-
+  let navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
