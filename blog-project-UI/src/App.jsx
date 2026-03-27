@@ -9,30 +9,37 @@ const router = createBrowserRouter(
     {
       path:"/home",
       element:
-      <ProtectedRoute>
-        <Home />
-      </ProtectedRoute>
+        <ProtectedRoute type="private">
+          <Home />
+        </ProtectedRoute>
     },
     {
       path:"/",
       element:
-      <>
+        <ProtectedRoute type="auth">
         <Login />
-      </>
+        </ProtectedRoute>
     },
     {
       path:"/signup",
       element:
-      <div>
+        <ProtectedRoute type="auth">
         <Signup />
-      </div>
+        </ProtectedRoute>
     },
     {
       path: "/addblog",
       element:
-        <ProtectedRoute>
+        <ProtectedRoute type="private">
           <AddBlog />
         </ProtectedRoute>
+    },
+    {
+      path:"/addblog/:id",
+      element:
+      <ProtectedRoute type="private">
+        <AddBlog/> 
+      </ProtectedRoute>
     }
   ]
 )

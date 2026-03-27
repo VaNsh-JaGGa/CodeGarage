@@ -85,26 +85,15 @@ const AddBlog = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (validateForm()) {
-
-            // 1. Get existing blogs
             let existingBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
-
-            // 2. Add new blog
             const newBlog = {
                 ...form,
                 date: new Date().toDateString()
             };
-
             const updatedBlogs = [...existingBlogs, newBlog];
-
-            // 3. Save back
             localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
-
-            // 4. Redirect
-            window.location.href = "/home"; // or use navigate
-
+            window.location.href = "/home";
         }
     };
 

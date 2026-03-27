@@ -28,8 +28,8 @@ const Login = () => {
     setform((prev) => {
       return { ...prev, [name]: value }
     });
+    
     console.log(name, value);
-
     newErrors = Validationform(name, value, {
       ...form,
       [name]: value,
@@ -72,13 +72,14 @@ const Login = () => {
       localStorage.setItem("currentUser", JSON.stringify(validUser));
       localStorage.setItem("isLoggedIn", "true");
       toast("Login successful", {
+        duration: 1500,
         style: {
           background: "#CDFADC",
           color: "black",
         },
       });
 
-      // Redirect (optional)
+      toast.dismiss();
       navi('/home')
       setform({
         Email: "",
@@ -112,7 +113,7 @@ const Login = () => {
             name="Email"
             id="email"
             placeholder=" "
-            className={`peer border p-2 rounded outline-none transition
+            className = {`peer border p-2 rounded outline-none transition
             ${Errors.Email
                 ? "border-red-500 "
                 : "border-[#A5B6CD]"}
