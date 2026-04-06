@@ -1,37 +1,32 @@
-
 const { DataTypes } = require('sequelize');
-// Import column type definitions
-
 const sequelize = require('../config/database');
-// Import database connection
 
 const Blog = sequelize.define('Blog', {
     id: {
-        type: DataTypes.INTEGER,    // integer column
-        autoIncrement: true,        // auto generate id
-        primaryKey: true,           // unique identifier
+        type: DataTypes.INTEGER, 
+        autoIncrement: true,     
+        primaryKey: true,
     },
 
     title: {
-        type: DataTypes.STRING,     // short text (for blog title)
-        allowNull: false,           // required field
+        type: DataTypes.STRING, 
+        allowNull: false,     
     },
 
     content: {
-        type: DataTypes.TEXT,       // long text (for blog body/description)
-        allowNull: false,           // required field
+        type: DataTypes.TEXT,   
+        allowNull: false,       
     },
 
     image_url: {
-        type: DataTypes.STRING,     // optional image URL for the blog
-        allowNull: true,            // not required
+        type: DataTypes.STRING,     
+        allowNull: true,           
     },
 
     userId: {
-        type: DataTypes.INTEGER,    // foreign key — stores which user wrote this blog
-        allowNull: false,           // every blog must have an author
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
 });
 
 module.exports = Blog;
-// Export so other files can use it
