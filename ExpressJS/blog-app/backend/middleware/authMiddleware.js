@@ -1,4 +1,3 @@
-// This middleware checks if the user has a valid JWT token
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -16,6 +15,6 @@ const protect = (req, res, next) => {
      catch (error) {
         return res.status(401).json({ message: 'Invalid token' });
     }
-
 };
+
 module.exports = protect;
