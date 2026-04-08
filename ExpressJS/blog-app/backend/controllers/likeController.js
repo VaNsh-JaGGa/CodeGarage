@@ -30,7 +30,8 @@ const toggleLike = async (req, res) => {
         const newReaction = await Like.create({ userId, blogId, type });
         res.status(201).json({ message: `Blog ${type}d successfully`, reaction: newReaction });
     }
-    catch (error) {
+    catch (error) 
+    {
         res.status(404).json({ message: 'Resource Missing', error: error.message });
     }
 };

@@ -4,7 +4,8 @@ const { User, Token } = require('../models/Index');
 require('dotenv').config();
 
 const signup = async (req, res) => {
-    try {
+    try 
+    {
         const { username, email, password } = req.body;
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) 
@@ -19,7 +20,8 @@ const signup = async (req, res) => {
             password: hashedPassword,
         });
         res.status(201).json({ message: 'User registered successfully', userId: user.id });
-    } 
+    }
+    
     catch (error) 
     {
         res.status(400).json({ message: 'Invalid Credentials', error: error.message });
@@ -27,17 +29,19 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-
     try 
     {
         const { email, password } = req.body;
         const user = await User.findOne({ where: { email } });
+        // console.log(user);
         if (!user) 
         {
             return res.status(400).json({ message: 'Invalid Credentials' });
         }
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
+        // console.log(isMatch);
+        if (!isMatch) 
+        {
             return res.status(400).json({ message: 'Password is Wrong' });
         }
         const token = jwt.sign(
@@ -45,17 +49,21 @@ const login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
-        await Token.create({
+        console.log(token);
+        await Token.create(
+        {
             token,           
             userId: user.id  
-        });
-        res.status(200).json({
-            message: 'Login successful',
+        }
+    );
+        res.status(200).json
+        (
+            {message: 'Login successful',
             token,
             userId: user.id,
-            username: user.username,
-        });
-    } 
+            username: user.username,}
+        );
+     } 
 
     catch (error) 
     {
@@ -75,9 +83,12 @@ const logout = async (req, res) => {
         await Token.destroy({ where: { token } });
         res.status(200).json({ message: 'Logged out successfully' });
     } 
+    
     catch (error) 
     {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        res.status(500).json(
+            { message: 'Server error', error: error.message }
+        );
     }
 };
 
