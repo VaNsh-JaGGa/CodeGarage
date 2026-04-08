@@ -17,7 +17,7 @@ const toggleLike = async (req, res) => {
             ({
                 where: { userId, blogId },
             });
-        if (existingReaction) {
+        if (existingReaction){
             if (existingReaction.type === type) {
                 await existingReaction.destroy();
                 return res.status(200).json({ message: `${type} removed` });
@@ -58,9 +58,10 @@ const getLikes = async (req, res) => {
         }
         res.status(200).json(
             { likeCount, dislikeCount, userReaction }
-        );
+        ); 
     }
-    catch (error) 
+    
+    catch (error)
     {
         res.status(500).json({ message: 'Server error', error: error.message });
     }

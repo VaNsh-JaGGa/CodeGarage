@@ -11,7 +11,7 @@ const addComment = async (req, res) => {
         const blog = await Blog.findOne(
             { where: { id: blogId } }
         );
-        if (!blog)
+        if (!blog) 
         {
             return res.status(404).json({ message: 'Blog not found' });
         }
