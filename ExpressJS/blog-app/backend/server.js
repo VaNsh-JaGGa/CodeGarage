@@ -16,13 +16,16 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/comments', commentRoutes);
 
 const PORT = process.env.PORT;
-sequelize.sync({ alter: true })
-    .then(() => {
-        console.log('Database connected and synced');
-        app.listen(PORT, () => {
-            console.log(`Server running at http://localhost:${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error('DB connection failed:', err.message);
-    }); 
+const startServer = async () => {
+  try {
+    await sequelize.sync();
+    console.log("Database connected and synced");
+    app.listen(5000, () => {
+      console.log("Server running...");
+    });
+  } catch (err) {
+    console.error("DB connection failed:", err);
+  }
+};
+
+startServer();

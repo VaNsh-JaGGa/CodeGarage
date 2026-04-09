@@ -19,9 +19,10 @@ const Comment = sequelize.define('Comment',
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    parentId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null,
+    },
 });
 module.exports = Comment;
-
-
-
-

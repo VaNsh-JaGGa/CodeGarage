@@ -58,7 +58,7 @@ const Home = () => {
                   >
                     EDIT
                   </button>
-
+                  
                   <button className="text-sm font-medium break-words w-full max-w-50 border-2 border-black rounded p-1 hover:bg-black hover:text-white transition-all duration-100" onClick={() => { deletecard(i) }}>
                     DELETE CARD BUTTON
                   </button>

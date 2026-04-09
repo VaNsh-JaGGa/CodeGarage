@@ -1,5 +1,6 @@
 const { Like, Blog } = require('../models/Index');
 const toggleLike = async (req, res) => {
+
     try {
         const blogId = parseInt(req.params.blogId);
         const userId = req.user.userId;
@@ -30,6 +31,7 @@ const toggleLike = async (req, res) => {
         const newReaction = await Like.create({ userId, blogId, type });
         res.status(201).json({ message: `Blog ${type}d successfully`, reaction: newReaction });
     }
+
     catch (error) 
     {
         res.status(404).json({ message: 'Resource Missing', error: error.message });
@@ -37,6 +39,7 @@ const toggleLike = async (req, res) => {
 };
 
 const getLikes = async (req, res) => {
+
     try {
         const blogId = parseInt(req.params.blogId);
         const blog = await Blog.findOne({ where: { id: blogId } });
@@ -50,7 +53,7 @@ const getLikes = async (req, res) => {
             where: { blogId, type: 'dislike' },
         });
         let userReaction = null;
-        if (req.user) {
+        if(req.user) {
             const reaction = await Like.findOne({
                 where: { userId: req.user.userId, blogId },
             });
@@ -60,8 +63,8 @@ const getLikes = async (req, res) => {
             { likeCount, dislikeCount, userReaction }
         ); 
     }
-    
-    catch (error)
+
+    catch(error)
     {
         res.status(500).json({ message: 'Server error', error: error.message });
     }

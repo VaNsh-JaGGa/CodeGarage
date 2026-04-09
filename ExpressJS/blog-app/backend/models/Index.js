@@ -21,5 +21,7 @@ Comment.belongsTo(User, { foreignKey: 'userId', as: 'commenter' });
 Blog.hasMany(Comment, { foreignKey: 'blogId', as: 'comments' });
 Comment.belongsTo(Blog, { foreignKey: 'blogId', as: 'blog' });
 
+Comment.hasMany(Comment, {foreignKey: 'parentId',as: 'replies'});
 
+Comment.belongsTo(Comment, {foreignKey: 'parentId',as: 'parent'});
 module.exports = { sequelize, User, Blog, Like, Comment, Token };
