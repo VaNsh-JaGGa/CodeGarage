@@ -5,8 +5,6 @@ import { useEffect } from "react";
 
 
 const AddBlog = () => {
-
-
     const navi = useNavigate();
     const { id } = useParams();
     const [form, setForm] = useState({
@@ -29,7 +27,7 @@ const AddBlog = () => {
     const validateField = (name, value) => {
         let error = "";
 
-        if (name === "image") {
+        if(name === "image") {
             if (!value) {
                 error = "Image URL is required";
             } else if (!/^https?:\/\/.+/.test(value)) {
@@ -115,7 +113,7 @@ const AddBlog = () => {
             navi('/home');
         }
     };
-    // nodejs , express , postgress , sqlize
+    
     return (
         <div className="min-h-screen bg-[#efefef] flex items-center justify-center px-4">
             <div className="bg-white w-full max-w-2xl p-8 my-2 rounded-lg shadow-md">

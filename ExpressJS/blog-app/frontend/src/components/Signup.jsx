@@ -48,19 +48,17 @@ const Signup = () => {
       return;
     }
 
-    const userData = {
-      Name: form.Name,
-      Email: form.Email,
-      Password: form.Password,
-    };
-
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
+      const response = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          username: form.Name,
+          email: form.Email,
+          password: form.Password,
+        }),
       });
 
       const data = await response.json();
@@ -88,51 +86,6 @@ const Signup = () => {
       });
       console.error(error);
     }
-  }
-
-  function submitButton(e){
-     e.preventDefault();
-     const Errors = SubmitSign(form);
-     SetError(Errors);
-
-    if (Object.keys(Errors).length > 0) {
-      toast("There was an error creating the account", {
-        style: {
-          background: "#FFC0C0",
-          color: "#000",
-          border: "1px solid #FF6B6B",
-        },
-      });
-      return;
-    }
-
-    const userData= {
-      Name : form.Name,
-      Email : form.Email,
-      Password : form.Password
-    };
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = users.find(user => user.Email === userData.Email);
-    if (userExists) {
-      toast("User already exists with this email", {
-        style: { background: "#FFC0C0", color: "#000" }
-      });
-      return;
-    }
-    users.push(userData);
-    localStorage.setItem("users", JSON.stringify(users));
-    // ----
-    toast("Account Created Successfully", {
-      style: {
-        background: "#CDFADC",
-        color: "black",
-        border: "1px solid #CDFADC",
-        borderRadius: "10px",
-      },
-    });
-
-    navi("/");
   }
 
   return (
