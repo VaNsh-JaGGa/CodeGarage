@@ -42,6 +42,65 @@ const Login = () => {
     console.log(Errors);
   }
 
+
+  async function submitButton(e) {
+    e.preventDefault();
+
+    const newErrors = SubmitUtils(form);
+    SetError(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast("There was an error creating the account", {
+        style: {
+          background: "#FFC0C0",
+          color: "#000",
+          border: "1px solid #FF6B6B",
+        },
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.Email,
+          password: form.Password,
+        }),
+      });
+
+      const data = await response.json();
+      console.log()
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("isLoggedIn", "true");
+
+      toast("Login successful", {
+        duration: 1500,
+        style: {
+          background: "#CDFADC",
+          color: "black",
+        },
+      });
+
+      navi("/home");
+
+    } catch (error) {
+      toast("Invalid Credentals", {
+        style: {
+          background: "#FFC0C0",
+          color: "#000",
+        },
+      });
+    }
+  }
+
   function submitButton(e) {
     e.preventDefault();
     const newErrors = SubmitUtils(form);
