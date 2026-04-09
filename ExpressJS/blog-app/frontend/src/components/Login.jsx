@@ -61,7 +61,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,9 +71,9 @@ const Login = () => {
           password: form.Password,
         }),
       });
-
+      console.log(response);
       const data = await response.json();
-      console.log()
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
@@ -93,60 +93,6 @@ const Login = () => {
 
     } catch (error) {
       toast("Invalid Credentals", {
-        style: {
-          background: "#FFC0C0",
-          color: "#000",
-        },
-      });
-    }
-  }
-
-  function submitButton(e) {
-    e.preventDefault();
-    const newErrors = SubmitUtils(form);
-    SetError(newErrors);
-    console.log("submitted");
-
-    if (Object.keys(newErrors).length > 0) {
-      toast("There was an error creating the account", {
-        style: {
-          background: "#FFC0C0",
-          color: "#000",
-          border: "1px solid #FF6B6B",
-        },
-      });
-      return;
-    }
-
-    // ----
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    const validUser = users.find(
-      (user) =>
-        user.Email === form.Email &&
-        user.Password === form.Password
-    );
-
-    if (validUser) {
-      localStorage.setItem("currentUser", JSON.stringify(validUser));
-      localStorage.setItem("isLoggedIn", "true");
-      toast("Login successful", {
-        duration: 1500,
-        style: {
-          background: "#CDFADC",
-          color: "black",
-        },
-      });
-
-      toast.dismiss();
-      navi('/home')
-      setform({
-        Email: "",
-        Password: ""
-      });
-
-    } else {
-      toast("Invalid credentials", {
         style: {
           background: "#FFC0C0",
           color: "#000",

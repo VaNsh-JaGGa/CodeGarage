@@ -31,6 +31,65 @@ const Signup = () => {
     });
   }
 
+  async function submitButton(e) {
+    e.preventDefault();
+
+    const Errors = SubmitSign(form);
+    SetError(Errors);
+
+    if (Object.keys(Errors).length > 0) {
+      toast("There was an error creating the account", {
+        style: {
+          background: "#FFC0C0",
+          color: "#000",
+          border: "1px solid #FF6B6B",
+        },
+      });
+      return;
+    }
+
+    const userData = {
+      Name: form.Name,
+      Email: form.Email,
+      Password: form.Password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast(data.message || "Signup failed", {
+          style: { background: "#FFC0C0", color: "#000" },
+        });
+        return;
+      }
+
+      toast("Account Created Successfully", {
+        style: {
+          background: "#CDFADC",
+          color: "black",
+          border: "1px solid #CDFADC",
+          borderRadius: "10px",
+        },
+      });
+
+      navi("/");
+    } catch (error) {
+      toast("Server error. Please try again later.", {
+        style: { background: "#FFC0C0", color: "#000" },
+      });
+      console.error(error);
+    }
+  }
+
   function submitButton(e){
      e.preventDefault();
      const Errors = SubmitSign(form);
