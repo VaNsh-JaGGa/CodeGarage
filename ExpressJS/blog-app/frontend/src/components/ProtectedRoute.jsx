@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children, type }) => {
 
     useEffect(() => {
         if (type === "auth" && isLoggedIn) {
-            navigate("/home", { replace: true });
+            navigate("/realhome", { replace: true });
         }
 
         if (type === "private" && !isLoggedIn) {

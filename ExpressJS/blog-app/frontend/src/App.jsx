@@ -1,20 +1,28 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import RealHome from "./components/RealHome"
 import Signup from "./components/Signup";
-import ProtectedRoute from "./components/protectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import AddBlog from "./components/AddBlog"
 const router = createBrowserRouter(
   [
     {
-      path:"/home",
+      path:"/",
+      element:
+      <div>
+      <Home />
+      </div>
+    },
+    {
+      path: "/realhome",
       element:
         <ProtectedRoute type="private">
-          <Home />
+          <RealHome/>
         </ProtectedRoute>
     },
     {
-      path:"/",
+      path:"/login",
       element:
         <ProtectedRoute type="auth">
         <Login />

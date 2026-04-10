@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 
 const Home = () => {
-  let navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     const storedBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
     setBlogs(storedBlogs);
   }, []);
-
-  function deletecard(index) {
-    const updatedBlogs = blogs.filter((_, i) => i !== index);
-    setBlogs(updatedBlogs);
-    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
-  }
-
+  
   return (
     <div className="min-h-screen bg-[#efefef]">
       <NavBar />
@@ -37,7 +29,7 @@ const Home = () => {
 
               <div className="p-4">
                 <p className="text-sm text-sky-500 mb-2 break-words">
-                  {item.date} / {item.category}
+                  {item.date} {item.category ? `/ ${item.category}` : ""}
                 </p>
 
                 <h2 className="text-lg font-semibold mb-2 break-words">
@@ -48,27 +40,12 @@ const Home = () => {
                   {item.description}
                 </p>
 
-                <div className="flex flex-col gap-3 mt-10">
-                  <button
-                    className="text-sm font-medium break-words w-full max-w-20 border-2 border-black rounded p-1 hover:bg-black hover:text-white transition-all duration-100"
-                    onClick={() => navigate(`/addblog/${i}`)}
-                  >
-                    EDIT
-                  </button>
-                  
-                  <button className="text-sm font-medium break-words w-full max-w-50 border-2 border-black rounded p-1 hover:bg-black hover:text-white transition-all duration-100" onClick={() => { deletecard(i) }}>
-                    DELETE CARD BUTTON
-                  </button>
-                </div>
-
               </div>
 
             </div>
           ))}
-
         </div>
       )}
-
     </div>
   );
 };

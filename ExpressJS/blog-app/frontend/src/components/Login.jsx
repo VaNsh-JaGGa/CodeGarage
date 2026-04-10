@@ -87,7 +87,7 @@ const Login = () => {
         },
       });
 
-      navi("/home");
+      navi("/realhome");
 
     }
     catch (error){
@@ -109,7 +109,6 @@ const Login = () => {
       >
 
         <h1 className="text-2xl font-bold text-center">Login</h1>
-
         <div className="flex flex-col relative gap-1">
           <label for="email">Email</label>
           <input
