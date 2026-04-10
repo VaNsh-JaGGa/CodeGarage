@@ -1,6 +1,5 @@
 export const Validationform = (name , value , formData) =>{
 
-    // Email Checking
     let errors= {};
     if(name == "Email"){
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

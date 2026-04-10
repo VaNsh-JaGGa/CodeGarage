@@ -19,16 +19,13 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#efefef]">
-
       <NavBar />
-
       {blogs.length === 0 ? (
         <p className="text-center text-gray-500 text-lg py-6">
           No blogs available
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-3 px-10">
-
           {blogs.map((item, i) => (
             <div key={i} className="bg-white shadow-md">
 

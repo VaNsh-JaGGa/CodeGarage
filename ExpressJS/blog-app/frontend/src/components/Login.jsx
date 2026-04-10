@@ -5,7 +5,6 @@ import { SubmitUtils } from "../utils/submitUtils";
 import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
-
   const [Errors, SetError] = useState({});
   const [form, setform] = useState(
     {
@@ -41,7 +40,6 @@ const Login = () => {
     console.log("its me");
     console.log(Errors);
   }
-
 
   async function submitButton(e) {
     e.preventDefault();
@@ -91,7 +89,8 @@ const Login = () => {
 
       navi("/home");
 
-    } catch (error) {
+    }
+    catch (error){
       toast("Invalid Credentals", {
         style: {
           background: "#FFC0C0",

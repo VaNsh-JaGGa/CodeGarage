@@ -36,7 +36,7 @@ const Signup = () => {
 
     const Errors = SubmitSign(form);
     SetError(Errors);
-
+    
     if (Object.keys(Errors).length > 0) {
       toast("There was an error creating the account", {
         style: {

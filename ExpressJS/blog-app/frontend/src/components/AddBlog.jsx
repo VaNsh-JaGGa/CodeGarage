@@ -16,17 +16,15 @@ const AddBlog = () => {
 
     useEffect(() => {
         const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-
         if (id !== undefined) {
             setForm(blogs[Number(id)]);
         }
     }, [id]);
 
     const [errors, setErrors] = useState({});
-
     const validateField = (name, value) => {
-        let error = "";
 
+        let error = "";
         if(name === "image") {
             if (!value) {
                 error = "Image URL is required";
@@ -67,9 +65,7 @@ const AddBlog = () => {
             ...prev,
             [name]: value
         }));
-
-        const error = validateField(name, value);
-
+        const error = validateField(name, value); 
         setErrors((prev) => ({
             ...prev,
             [name]: error
@@ -121,8 +117,6 @@ const AddBlog = () => {
                 <h2 className="text-2xl font-bold text-center mb-6">Add New Blog</h2>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-                    {/* Image */}
                     <div className="relative flex flex-col gap-1">
                         <label for="img">Image URL</label>
                         <input
@@ -139,8 +133,7 @@ const AddBlog = () => {
                             for="email"
                             className={`absolute left-3 px-1 transition-all pointer-events-none
                             ${errors.image ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
-                            floating-label
-                `}
+                            floating-label`}
                         >
                             Enter URL <span className="text-red-500">*</span>
                         </label>
