@@ -1,4 +1,4 @@
-export const Validationform = (name , value , formData) =>{
+export const Validationform = (name , value) =>{
 
     let errors= {};
     if(name == "Email"){

@@ -20,10 +20,10 @@ app.use('/api/comments', commentRoutes);
 const PORT = process.env.PORT;
 const startServer = async () => {
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("Database connected and synced");
     app.listen(5000, () => {
-      console.log("Server running...");
+      console.log("Server running on ",PORT);
     });
   } catch (err) {
     console.error("DB connection failed:", err);

@@ -1,19 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { checkLogin } from "../utils/api";
 
 const ProtectedRoute = ({ children, type }) => {
-    const navigate = useNavigate();
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const loggedIn = checkLogin();
 
-    useEffect(() => {
-        if (type === "auth" && isLoggedIn) {
-            navigate("/realhome", { replace: true });
-        }
+    if ((type === "auth" || type === "guest") && loggedIn) {
+        return <Navigate to="/realhome" replace />;
+    }
 
-        if (type === "private" && !isLoggedIn) {
-            navigate("/", { replace: true });
-        }
-    }, [isLoggedIn, type, navigate]);
+    if (type === "private" && !loggedIn) {
+        return <Navigate to="/" replace />;
+    }
 
     return children;
 };

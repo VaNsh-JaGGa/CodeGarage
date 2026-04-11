@@ -1,45 +1,54 @@
 import { useNavigate } from "react-router-dom"
 import { FaPlus } from "react-icons/fa";
+import { apiRequest, logoutUser } from "../utils/api";
 
 const RealNavBar = () => {
     const navi = useNavigate();
-    return (
-        <>
-            <div className=" flex flex-col gap-[2.5rem] sm:flex-row sm:justify-between  sm:gap-[1rem] relative mb-25 bg-[#1C1010] px-10 py-5">
+    const handleLogout = async () => {
+        try {
+            await apiRequest("/auth/logout", {
+                method: "POST",
+            });
+        } catch {
+            // Clear local session even if the logout request fails.
+        } finally {
+            logoutUser();
+            navi("/", { replace: true });
+        }
+    };
 
-                <div className="text-center">
-                    <p className="text-white text-lg font-medium">
-                        My Recent Posts
+    return (
+        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[rgba(36,25,22,0.88)] px-6 py-6 text-white shadow-[0_18px_60px_rgba(54,32,24,0.12)] backdrop-blur xl:px-10">
+            <div className="absolute -bottom-12 -left-8 h-48 w-48 rounded-full bg-[rgba(243,212,197,0.12)] blur-md" />
+            <div className="absolute -right-8 -top-12 h-52 w-52 rounded-full bg-[rgba(184,92,56,0.18)] blur-xl" />
+            <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="max-w-xl">
+                    <p className="mb-4 inline-flex items-center rounded-full bg-[rgba(184,92,56,0.12)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#f3d4c5]">Creator dashboard</p>
+                    <p className="text-sm uppercase tracking-[0.18em] text-white/60">My recent posts</p>
+                    <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">Manage your blog with a cleaner editorial view.</h1>
+                    <p className="mt-4 max-w-lg text-sm leading-7 text-white/72 sm:text-base">
+                        Publish new articles, refine old ones, and keep your content library polished from one place.
                     </p>
-                    <h1 className="text-4xl font-bold text-white">My Blog</h1>
                 </div>
 
-                <div className="flex flex-col gap-8 sm:flex-row sm:gap-15">
+                <div className="flex flex-col gap-3 sm:flex-row">
                     <button
-                        className=" flex justify-center items-center gap-4 text-white px-6 py-2 rounded text-xl font-bold cursor-pointer border-2 border-white sm:border-none hover:bg-white hover:text-blue-600 
-                      transition-all duration-300 ease-in-out"
+                        className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold text-white transition duration-200 hover:bg-white hover:text-[#241916]"
                         onClick={() => {
                             navi("/addblog");
                         }}
                     >
-                        <FaPlus />Add Blog
+                        <FaPlus /> Add Blog
                     </button>
                     <button
-                        className=" text-white px-6 py-2 rounded text-xl font-bold cursor-pointer border-2 border-white sm:border-none hover:bg-white hover:text-blue-600 
-                      transition-all duration-300 ease-in-out"
-                        onClick={() => {
-                            localStorage.removeItem("isLoggedIn");
-                            localStorage.removeItem("currentUser");
-                            navi("/");
-                        }}
+                        className="inline-flex items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]"
+                        onClick={handleLogout}
                     >
                         Log Out
                     </button>
-
                 </div>
-
             </div>
-        </>
+        </div>
     )
 }
 

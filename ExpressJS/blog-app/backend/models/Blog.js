@@ -13,6 +13,12 @@ const Blog = sequelize.define('Blog', {
         allowNull: false,     
     },
 
+    category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'General',
+    },
+
     content: {
         type: DataTypes.TEXT,   
         allowNull: false,       

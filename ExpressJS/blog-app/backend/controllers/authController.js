@@ -14,11 +14,13 @@ const signup = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create
+
         ({
             username,
             email,
             password: hashedPassword,
         });
+
         res.status(201).json({ message: 'User registered successfully', userId: user.id });
     }
     
@@ -54,7 +56,7 @@ const login = async (req, res) => {
             token,           
             userId: user.id  
         }
-    );
+    );    
         res.status(200).json
         (
             {message: 'Login successful',
@@ -63,7 +65,7 @@ const login = async (req, res) => {
             username: user.username,}
         );
      } 
-
+     
     catch (error) 
     {
         res.status(400).json({ message: 'Invalid Credentials', error: error.message });

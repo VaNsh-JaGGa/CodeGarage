@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
-import { Validationform } from '../utils/Validationform';
-import {SubmitSign} from '../utils/SubmitSign'
-import toast, { Toaster } from 'react-hot-toast';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Validationform } from "../utils/Validationform";
+import { SubmitSign } from "../utils/SubmitSign";
+import toast, { Toaster } from "react-hot-toast";
+
 const Signup = () => {
   const navi = useNavigate();
   const [Errors, SetError] = useState({});
@@ -13,21 +14,21 @@ const Signup = () => {
   });
 
   function SubmitonChange(e) {
-    let name = e.target.name;
-    let value = e.target.value;
+    const name = e.target.name;
+    const value = e.target.value;
     let newErrors = {};
 
     setform((prev) => {
-      return { ...prev, [name]: value }
+      return { ...prev, [name]: value };
     });
 
     newErrors = Validationform(name, value, {
       ...form,
       [name]: value,
-    })
+    });
 
     SetError((prev) => {
-      return { ...prev, ...newErrors }
+      return { ...prev, ...newErrors };
     });
   }
 
@@ -36,7 +37,7 @@ const Signup = () => {
 
     const Errors = SubmitSign(form);
     SetError(Errors);
-    
+
     if (Object.keys(Errors).length > 0) {
       toast("There was an error creating the account", {
         style: {
@@ -89,113 +90,87 @@ const Signup = () => {
   }
 
   return (
-    <>
-      <div className="flex justify-center items-center h-screen bg-[#efefef]">
-        <Toaster />
-        <form
-          className="flex flex-col gap-4 bg-white p-8 m-8 rounded-lg w-[24rem]"
-        >
+    <div className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+      <Toaster />
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(249,241,233,0.86))] shadow-[0_18px_60px_rgba(54,32,24,0.12)] lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="relative overflow-hidden bg-[linear-gradient(165deg,#2f211d_0%,#4a3028_52%,#7f4a34_100%)] px-8 py-10 text-white">
+          <div className="relative z-10">
+            <p className="mb-5 inline-flex items-center rounded-full bg-[rgba(184,92,56,0.12)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#f3d4c5]">Start publishing</p>
+            <h1 className="text-4xl font-semibold sm:text-5xl">Create an account and shape your own editorial space.</h1>
+            <p className="mt-5 max-w-md text-sm leading-7 text-white/74 sm:text-base">
+              The refreshed theme gives your app a more modern blog feel, with softer depth, stronger typography, and calmer forms.
+            </p>
+          </div>
+        </div>
 
-          <h1 className="text-2xl font-bold text-center">Signup</h1>
+        <form className="flex flex-col gap-5 p-8 sm:p-10">
+          <div>
+            <p className="text-sm uppercase tracking-[0.18em] text-[#b85c38]">New account</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#241916]">Signup</h2>
+          </div>
 
-          <div className="flex flex-col relative gap-1">
-            <label>Name</label>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name" className="text-sm font-medium text-[#6d5b56]">Name</label>
             <input
               type="text"
-              placeholder=" "
+              id="name"
               name="Name"
               value={form.Name}
               onChange={(e) => { SubmitonChange(e) }}
-              className={`peer border p-2 rounded outline-none transition border-[#A5B6CD]
-                  ${Errors.Name
-                  ? "border-red-500 "
-                  : "border-[#A5B6CD]"}
-                `}
+              className={`w-full rounded-2xl border bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)] ${Errors.Name ? "border-red-400 ring-4 ring-red-100" : "border-[rgba(93,64,55,0.12)]"}`}
             />
-            <label
-              className={`absolute left-3 px-1 transition-all pointer-events-none
-                ${Errors.Email ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
-                floating-label
-                `}
-            >
-              Enter Name<span className="text-red-500">*</span>
-            </label>
             {Errors.Name && (
-              <span className="text-red-500 text-xs mt-1">
-                Name is Wrong
+              <span className="text-red-500 text-sm">
+                Name is wrong
               </span>)}
           </div>
 
-
-          <div className="flex flex-col relative gap-1">
-            <label>Email</label>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="email" className="text-sm font-medium text-[#6d5b56]">Email</label>
             <input
               type="email"
-              placeholder=" "
+              id="email"
               name="Email"
               value={form.Email}
               onChange={(e) => { SubmitonChange(e) }}
-              className={`peer border p-2 rounded outline-none transition
-              ${Errors.Email ? "border-red-500" : "border-[#A5B6CD]"}
-              `}
+              className={`w-full rounded-2xl border bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)] ${Errors.Email ? "border-red-400 ring-4 ring-red-100" : "border-[rgba(93,64,55,0.12)]"}`}
             />
-            <label
-              for="email"
-              className={`absolute left-3 px-1 transition-all pointer-events-none
-                ${Errors.Email ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
-                floating-label
-                `}
-            >
-              Enter Email<span className="text-red-500">*</span>
-            </label>
             {Errors.Email && (
-              <span className="text-red-500 text-xs mt-1">
-                Email is Wrong
+              <span className="text-red-500 text-sm">
+                Email is wrong
               </span>)}
           </div>
 
-
-          <div className="flex flex-col relative gap-1">
-            <label>Password</label>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="text-sm font-medium text-[#6d5b56]">Password</label>
             <input
+              id="password"
               type="password"
-              placeholder=" "
               name="Password"
               value={form.Password}
               onChange={(e) => { SubmitonChange(e) }}
-              className={`peer border p-2 rounded outline-none transition
-              ${Errors.Password ? "border-red-500" : "border-[#A5B6CD]"}
-              `}
+              className={`w-full rounded-2xl border bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)] ${Errors.Password ? "border-red-400 ring-4 ring-red-100" : "border-[rgba(93,64,55,0.12)]"}`}
             />
-            <label
-              for="email"
-              className={`absolute left-3 px-1 transition-all pointer-events-none
-                ${Errors.Password ? "text-red-500 bg-white" : "text-gray-500 bg-white"}
-                floating-label
-                `}
-            >
-              Enter Password<span className="text-red-500">*</span>
-            </label>
             {Errors.Password && (
-              <span className="text-red-500 text-xs mt-1">
-                Password is Wrong
+              <span className="text-red-500 text-sm">
+                Password is wrong
               </span>)}
           </div>
 
-          <button onClick={(e)=>{submitButton(e)}} className="bg-blue-500 text-white p-2 rounded">
+          <button onClick={(e) => { submitButton(e) }} className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]">
             Signup
           </button>
 
-          <p className="text-sm text-center">
+          <p className="text-sm text-[#6d5b56]">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-500">
+            <Link to="/login" className="font-semibold text-[#b85c38]">
               Login
             </Link>
           </p>
         </form>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Signup
+export default Signup;

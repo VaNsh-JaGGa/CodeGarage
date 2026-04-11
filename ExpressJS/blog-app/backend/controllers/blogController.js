@@ -50,10 +50,11 @@ const getBlogById = async (req, res) => {
 const createBlog = async (req, res) => {
     try 
     {
-        const { title, content, image_url } = req.body;
+        const { title, content, image_url, category } = req.body;
         const userId = req.user.userId;
         const blog = await Blog.create({
             title,
+            category: category || 'General',
             content,
             image_url,
             userId,
@@ -69,7 +70,7 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
     try{
         const { id } = req.params;
-        const { title, content, image_url } = req.body;
+        const { title, content, image_url, category } = req.body;
         const blog = await Blog.findOne({ where: { id } });
         if (!blog) 
         {
@@ -79,7 +80,7 @@ const updateBlog = async (req, res) => {
         {
             return res.status(403).json({ message: 'Not authorized to edit this blog' });
         }
-        await blog.update({ title, content, image_url });
+        await blog.update({ title, content, image_url, category: category || 'General' });
         res.status(200).json({ message: 'Blog updated successfully', blog });
     } 
     catch (error) 
