@@ -19,6 +19,8 @@ const Home = () => {
     };
 
     loadBlogs();
+    console.log("Heyy I am Blogs");
+    console.log(blogs);
   }, []);
   
   return (

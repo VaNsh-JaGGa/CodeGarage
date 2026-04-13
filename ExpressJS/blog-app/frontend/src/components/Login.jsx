@@ -65,7 +65,11 @@ const Login = () => {
           password: form.Password,
         }),
       });
+      console.log("this is response");
+      console.log(response);
       const data = await response.json();
+      console.log("This is Data");
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }

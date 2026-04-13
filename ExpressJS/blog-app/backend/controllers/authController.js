@@ -14,7 +14,6 @@ const signup = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create
-
         ({
             username,
             email,
@@ -65,12 +64,13 @@ const login = async (req, res) => {
             username: user.username,}
         );
      } 
-     
+
     catch (error) 
     {
         res.status(400).json({ message: 'Invalid Credentials', error: error.message });
     }
 };
+
 
 const logout = async (req, res) => {
     try 

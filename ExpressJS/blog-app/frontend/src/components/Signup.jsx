@@ -21,6 +21,7 @@ const Signup = () => {
     setform((prev) => {
       return { ...prev, [name]: value };
     });
+    // console.log(form);
 
     newErrors = Validationform(name, value, {
       ...form,
@@ -38,6 +39,7 @@ const Signup = () => {
     const Errors = SubmitSign(form);
     SetError(Errors);
 
+    console.log(Errors);
     if (Object.keys(Errors).length > 0) {
       toast("There was an error creating the account", {
         style: {
@@ -61,7 +63,7 @@ const Signup = () => {
           password: form.Password,
         }),
       });
-
+      console.log(response);
       const data = await response.json();
 
       if (!response.ok) {
@@ -81,7 +83,8 @@ const Signup = () => {
       });
 
       navi("/");
-    } catch (error) {
+    }
+     catch (error) {
       toast("Server error. Please try again later.", {
         style: { background: "#FFC0C0", color: "#000" },
       });

@@ -11,7 +11,7 @@ export const Validationform = (name , value) =>{
         }
     }
 
-    if (name === "Password") {
+    if(name === "Password") {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
         if (!passwordRegex.test(value)) {

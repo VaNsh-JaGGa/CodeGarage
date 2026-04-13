@@ -46,9 +46,12 @@ export const apiRequest = async (endpoint, options = {}) => {
     ...options,
     headers,
   });
-
+  console.log("Helo I am Ressss");
+  console.log(response);
+  
   const data = await response.json().catch(() => ({}));
-
+  console.log(data);
+  
   if (!response.ok) {
     throw new Error(data.message || "Request failed");
   }

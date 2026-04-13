@@ -5,7 +5,7 @@ import RealHome from "./components/RealHome"
 import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddBlog from "./components/AddBlog"
-import BlogDetails from "./components/BlogDetails";
+// import BlogDetails from "./components/BlogDetails";
 const router = createBrowserRouter(
   [
     {
@@ -52,13 +52,13 @@ const router = createBrowserRouter(
         <AddBlog/> 
       </ProtectedRoute>
     },
-    {
-      path: "/blog/:id",
-      element:
-      <ProtectedRoute type="private">
-        <BlogDetails />
-      </ProtectedRoute>
-    }
+    // {
+    //   path: "/blog/:id",
+    //   element:
+    //   <ProtectedRoute type="private">
+    //     <BlogDetails />
+    //   </ProtectedRoute>
+    // }
   ]
 )
 
