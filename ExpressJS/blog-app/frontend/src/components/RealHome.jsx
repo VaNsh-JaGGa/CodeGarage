@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RealNavBar from "../components/RealNavBar";
+import FixedNavBar from "../components/FixedNavBar";
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest, getBlogCardData } from "../utils/api";
 
@@ -40,7 +40,7 @@ const RealHome = () => {
         <div className="min-h-screen px-4 pb-10 pt-5 sm:px-6 lg:px-8">
             <Toaster />
             <div className="mx-auto max-w-7xl space-y-8">
-                <RealNavBar />
+                <FixedNavBar />
                 <section className="rounded-[2rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(135deg,rgba(255,255,255,0.9),rgba(249,241,233,0.74))] p-8 shadow-[0_18px_60px_rgba(54,32,24,0.12)] backdrop-blur md:p-10">
                     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                         <div>
@@ -72,7 +72,7 @@ const RealHome = () => {
                                 <img
                                     src={item.image}
                                     alt={item.title || "blog"}
-                                    className="h-60 w-full object-cover"
+                                    className="h-56 w-full object-cover sm:h-60"
                                     onClick={() => navigate(`/blog/${item.id}`)}
                                 />
 
@@ -92,22 +92,22 @@ const RealHome = () => {
                                         {item.description}
                                     </p>
 
-                                    <div className="mt-auto flex flex-wrap gap-3 pt-2">
+                                    <div className="mt-auto flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
                                         <button
-                                            className="inline-flex items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-[#241916] px-4 py-2.5 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#3a2925]"
+                                            className="inline-flex w-full items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-[#241916] px-4 py-2.5 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#3a2925] sm:w-auto"
                                             onClick={() => navigate(`/blog/${item.id}`)}
                                         >
                                             View Details
                                         </button>
                                         <button
-                                            className="inline-flex items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-4 py-2.5 font-semibold text-[#241916] transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427]"
+                                            className="inline-flex w-full items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-4 py-2.5 font-semibold text-[#241916] transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427] sm:w-auto"
                                             onClick={() => navigate(`/addblog/${item.id}`)}
                                         >
                                             Edit
                                         </button>
 
                                         <button
-                                            className="inline-flex items-center justify-center rounded-full bg-[#b85c38] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]"
+                                            className="inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] sm:w-auto"
                                             onClick={() => { deletecard(item.id) }}
                                         >
                                             Delete Post

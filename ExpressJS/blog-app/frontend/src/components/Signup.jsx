@@ -96,7 +96,7 @@ const Signup = () => {
     <div className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
       <Toaster />
       <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(249,241,233,0.86))] shadow-[0_18px_60px_rgba(54,32,24,0.12)] lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="relative overflow-hidden bg-[linear-gradient(165deg,#2f211d_0%,#4a3028_52%,#7f4a34_100%)] px-8 py-10 text-white">
+        <div className="relative overflow-hidden bg-[linear-gradient(165deg,#2f211d_0%,#4a3028_52%,#7f4a34_100%)] px-6 py-8 text-white sm:px-8 sm:py-10">
           <div className="relative z-10">
             <p className="mb-5 inline-flex items-center rounded-full bg-[rgba(184,92,56,0.12)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#f3d4c5]">Start publishing</p>
             <h1 className="text-4xl font-semibold sm:text-5xl">Create an account and shape your own editorial space.</h1>
@@ -106,7 +106,7 @@ const Signup = () => {
           </div>
         </div>
 
-        <form className="flex flex-col gap-5 p-8 sm:p-10">
+        <form className="flex flex-col gap-5 p-6 sm:p-8 lg:p-10">
           <div>
             <p className="text-sm uppercase tracking-[0.18em] text-[#b85c38]">New account</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#241916]">Signup</h2>

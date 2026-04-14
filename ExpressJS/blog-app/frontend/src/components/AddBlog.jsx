@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest } from "../utils/api";
+import FixedNavBar from "./FixedNavBar";
 
 
 const AddBlog = () => {
@@ -56,6 +57,7 @@ const AddBlog = () => {
                 error = "Minimum 3 characters required";
             }
         }
+        
         if (name === "category") {
             if (!value) {
                 error = "Category is required";
@@ -137,9 +139,11 @@ const AddBlog = () => {
     };
     
     return (
-        <div className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+        <div className="min-h-screen px-4 py-5 sm:px-6 lg:px-8">
             <Toaster />
-            <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(249,241,233,0.86))] p-8 shadow-[0_18px_60px_rgba(54,32,24,0.12)] sm:p-10">
+            <div className="mx-auto max-w-7xl space-y-8">
+                <FixedNavBar />
+                <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(249,241,233,0.86))] p-6 shadow-[0_18px_60px_rgba(54,32,24,0.12)] sm:p-8 lg:p-10">
 
                 <div className="mb-8">
                     <p className="mb-4 inline-flex items-center rounded-full bg-[rgba(184,92,56,0.12)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#8e4427]">{id !== undefined ? "Update post" : "Create post"}</p>
@@ -202,11 +206,12 @@ const AddBlog = () => {
                         {errors.description && <span className="text-red-500 text-sm">{errors.description}</span>}
                     </div>
 
-                    <button className="mt-2 inline-flex items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]">
+                    <button className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] sm:w-auto">
                         {id !== undefined ? "Update Blog" : "Publish Blog"}
                     </button>
 
                 </form>
+                </div>
             </div>
         </div>
     );

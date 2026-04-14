@@ -10,7 +10,7 @@ const RealNavBar = () => {
                 method: "POST",
             });
         } catch {
-            // Clear local session even if the logout request fails.
+
         } finally {
             logoutUser();
             navi("/", { replace: true });
@@ -29,23 +29,6 @@ const RealNavBar = () => {
                     <p className="mt-4 max-w-lg text-sm leading-7 text-white/72 sm:text-base">
                         Publish new articles, refine old ones, and keep your content library polished from one place.
                     </p>
-                </div>
-
-                <div className="flex flex-col gap-3 sm:flex-row">
-                    <button
-                        className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold text-white transition duration-200 hover:bg-white hover:text-[#241916]"
-                        onClick={() => {
-                            navi("/addblog");
-                        }}
-                    >
-                        <FaPlus /> Add Blog
-                    </button>
-                    <button
-                        className="inline-flex items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]"
-                        onClick={handleLogout}
-                    >
-                        Log Out
-                    </button>
                 </div>
             </div>
         </div>

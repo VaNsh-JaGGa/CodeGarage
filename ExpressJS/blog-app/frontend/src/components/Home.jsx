@@ -19,10 +19,8 @@ const Home = () => {
     };
 
     loadBlogs();
-    console.log("Heyy I am Blogs");
-    console.log(blogs);
   }, []);
-  
+
   return (
     <div className="min-h-screen px-4 pb-10 pt-5 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
@@ -64,7 +62,7 @@ const Home = () => {
                 <img
                   src={item.image}
                   alt={item.title || "blog"}
-                  className="h-60 w-full object-cover"
+                  className="h-56 w-full object-cover sm:h-60"
                 />
 
                 <div className="flex min-h-[15rem] flex-col gap-4 p-6">

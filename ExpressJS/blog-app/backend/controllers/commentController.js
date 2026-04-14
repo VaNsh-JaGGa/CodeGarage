@@ -71,7 +71,7 @@ const addComment = async (req, res) => {
 };
 
 const getComments = async (req, res) => {
-    try {
+    try{
         const blogId = parseInt(req.params.blogId);
         const blog = await Blog.findOne({ where: { id: blogId } });
         if (!blog) {

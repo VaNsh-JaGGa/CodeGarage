@@ -18,7 +18,7 @@ const navi = useNavigate();
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
-            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold text-white transition duration-200 hover:bg-white hover:text-[#241916]"
+            className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/10 px-5 py-3 font-semibold text-white transition duration-200 hover:bg-white hover:text-[#241916] sm:w-auto"
             onClick={() => {
               navi("/login");
             }}
@@ -26,7 +26,7 @@ const navi = useNavigate();
             Login
           </button>
           <button
-            className="inline-flex items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427]"
+            className="inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] sm:w-auto"
             onClick={() => {
               logoutUser();
               navi("/signup");
