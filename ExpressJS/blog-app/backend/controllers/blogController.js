@@ -11,6 +11,7 @@ const getAllBlogs = async (req, res) => {
             }],
             order: [['createdAt', 'DESC']],
         });
+        // console.log(blogs);
         res.status(200).json({
             message: 'Blogs fetched successfully',
             count: blogs.length, 
@@ -35,6 +36,8 @@ const getBlogById = async (req, res) => {
                 attributes: ['username', 'email'],
             }],
         });
+        console.log("is blog present");
+        console.log(blog); 
         if(!blog) 
         {
             return res.status(404).json({ message: 'Blog not found' });
@@ -52,6 +55,7 @@ const createBlog = async (req, res) => {
     {
         const { title, content, image_url, category } = req.body;
         const userId = req.user.userId;
+        console.log('everything Fine');
         const blog = await Blog.create({
             title,
             category: category || 'General',
@@ -59,6 +63,7 @@ const createBlog = async (req, res) => {
             image_url,
             userId,
         });
+        console.log(blog);
         res.status(201).json({ message: 'Blog created successfully', blog });
     }
     catch (error) 

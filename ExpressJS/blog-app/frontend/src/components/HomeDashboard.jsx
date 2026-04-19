@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FixedNavBar from "../components/FixedNavBar";
+import FixedNavBar from "./FixedNavBar";
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest, getBlogCardData } from "../utils/api";
 
-const RealHome = () => {
+const HomeDashboard = () => {
     let navigate = useNavigate();
+    const currentUserId = Number(localStorage.getItem("userId"));
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -67,8 +68,11 @@ const RealHome = () => {
                     </p>
                 ) : (
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                        {blogs.map((item, i) => (
-                            <article key={i} className="overflow-hidden rounded-[1.6rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,245,239,0.92))] shadow-[0_14px_40px_rgba(46,25,20,0.08)] transition duration-300 hover:-translate-y-1">
+                        {blogs.map((item) => {
+                            const isOwner = item.userId === currentUserId;
+
+                            return (
+                            <article key={item.id} className="overflow-hidden rounded-[1.6rem] border border-[rgba(93,64,55,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,245,239,0.92))] shadow-[0_14px_40px_rgba(46,25,20,0.08)] transition duration-300 hover:-translate-y-1">
                                 <img
                                     src={item.image}
                                     alt={item.title || "blog"}
@@ -99,23 +103,27 @@ const RealHome = () => {
                                         >
                                             View Details
                                         </button>
-                                        <button
-                                            className="inline-flex w-full items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-4 py-2.5 font-semibold text-[#241916] transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427] sm:w-auto"
-                                            onClick={() => navigate(`/addblog/${item.id}`)}
-                                        >
-                                            Edit
-                                        </button>
+                                        {isOwner ? (
+                                            <>
+                                                <button
+                                                    className="inline-flex w-full items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-4 py-2.5 font-semibold text-[#241916] transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427] sm:w-auto"
+                                                    onClick={() => navigate(`/addblog/${item.id}`)}
+                                                >
+                                                    Edit
+                                                </button>
 
-                                        <button
-                                            className="inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] sm:w-auto"
-                                            onClick={() => { deletecard(item.id) }}
-                                        >
-                                            Delete Post
-                                        </button>
+                                                <button
+                                                    className="inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] sm:w-auto"
+                                                    onClick={() => { deletecard(item.id) }}
+                                                >
+                                                    Delete Post
+                                                </button>
+                                            </>
+                                        ) : null}
                                     </div>
                                 </div>
                             </article>
-                        ))}
+                        )})}
                     </div>
                 )}
             </div>
@@ -123,4 +131,4 @@ const RealHome = () => {
     );
 };
 
-export default RealHome;
+export default HomeDashboard;

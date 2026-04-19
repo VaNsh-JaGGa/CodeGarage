@@ -46,12 +46,18 @@ const getLikes = async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: 'Blog not found' });
         }
+        console.log("Blog Finded"); // blog milgaya
+        console.log(blog);
         const likeCount = await Like.count({
             where: { blogId, type: 'like' },
         });
+        console.log("likeCount");
+        console.log(likeCount);
         const dislikeCount = await Like.count({
             where: { blogId, type: 'dislike' },
         });
+        console.log("dislike Count")
+        console.log(dislikeCount);
         let userReaction = null;
         if(req.user) {
             const reaction = await Like.findOne({

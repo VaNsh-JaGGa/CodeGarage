@@ -66,6 +66,7 @@ const ReplyForm = ({
 const CommentItem = ({
   comment,
   level,
+  isLoggedIn,
   replyDrafts,
   replyOpenId,
   replyLoadingId,
@@ -78,6 +79,7 @@ const CommentItem = ({
   const childReplies = comment.replies || [];
   const hasReplies = childReplies.length > 0;
   const areRepliesVisible = Boolean(visibleReplyGroups[comment.id]);
+
   return (
     <div
       className={`rounded-[1.5rem] border border-[rgba(93,64,55,0.12)] bg-white/80 p-4 shadow-[0_10px_30px_rgba(46,25,20,0.06)] ${level > 0 ? "ml-4 sm:ml-8" : ""}`}
@@ -92,14 +94,18 @@ const CommentItem = ({
       </div>
 
       <p className="mt-3 text-sm leading-7 text-[#6d5b56]">{comment.text}</p>
+
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        <button
-          type="button"
-          className="text-sm font-semibold text-[#b85c38] transition hover:text-[#8e4427]"
-          onClick={() => onReplyToggle(comment.id)}
-        >
-          {replyOpenId === comment.id ? "Cancel" : "Reply"}
-        </button>
+        {isLoggedIn ? (
+          <button
+            type="button"
+            className="text-sm font-semibold text-[#b85c38] transition hover:text-[#8e4427]"
+            onClick={() => onReplyToggle(comment.id)}
+          >
+            {replyOpenId === comment.id ? "Cancel" : "Reply"}
+          </button>
+        ) : null}
+
         {hasReplies ? (
           <button
             type="button"
@@ -113,7 +119,7 @@ const CommentItem = ({
         ) : null}
       </div>
 
-      {replyOpenId === comment.id ? (
+      {isLoggedIn && replyOpenId === comment.id ? (
         <ReplyForm
           commentId={comment.id}
           replyDrafts={replyDrafts}
@@ -128,6 +134,7 @@ const CommentItem = ({
           <CommentTree
             comments={childReplies}
             level={level + 1}
+            isLoggedIn={isLoggedIn}
             replyDrafts={replyDrafts}
             replyOpenId={replyOpenId}
             replyLoadingId={replyLoadingId}
@@ -146,6 +153,7 @@ const CommentItem = ({
 const CommentTree = ({
   comments,
   level = 0,
+  isLoggedIn,
   replyDrafts,
   replyOpenId,
   replyLoadingId,
@@ -162,6 +170,7 @@ const CommentTree = ({
           key={comment.id}
           comment={comment}
           level={level}
+          isLoggedIn={isLoggedIn}
           replyDrafts={replyDrafts}
           replyOpenId={replyOpenId}
           replyLoadingId={replyLoadingId}
@@ -176,15 +185,13 @@ const CommentTree = ({
   );
 };
 
+// ── fetchBlogDetails: skips /likes call for guests ────────────────────────────
 const fetchBlogDetails = async (blogId) => {
-  const [blogResponse, likesResponse, commentsResponse] = await Promise.all([
+  const [blogResponse, commentsResponse, likesResponse] = await Promise.all([
     apiRequest(`/blogs/${blogId}`),
-    apiRequest(`/likes/${blogId}`),
     apiRequest(`/comments/${blogId}`),
+    apiRequest(`/likes/${blogId}`),
   ]);
-  console.log("blogResponse:",blogResponse);
-  console.log("likesResponse:",likesResponse);
-  console.log("commentsResponse:",commentsResponse);
 
   const commentList = commentsResponse || [];
   return {
@@ -201,6 +208,8 @@ const fetchBlogDetails = async (blogId) => {
 
 const BlogDetails = () => {
   const { id } = useParams();
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
+
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
   const [stats, setStats] = useState(defaultStats);
@@ -220,13 +229,12 @@ const BlogDetails = () => {
     setStats(data.stats);
   };
 
+  // ✅ FIX: pass isLoggedIn to fetchBlogDetails
   const loadBlogDetails = async () => {
     try {
       setLoading(true);
       setError("");
       const data = await fetchBlogDetails(id);
-      console.log("Data of the blog");
-      console.log(data);
       applyBlogData(data);
     } catch (err) {
       setError(err.message || "Failed to load blog details");
@@ -235,6 +243,7 @@ const BlogDetails = () => {
     }
   };
 
+  // ✅ FIX: pass isLoggedIn to fetchBlogDetails
   const refreshBlogDetails = async () => {
     const data = await fetchBlogDetails(id);
     applyBlogData(data);
@@ -263,14 +272,11 @@ const BlogDetails = () => {
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
     const trimmedComment = commentText.trim();
-    if (!trimmedComment)
-    {
+    if (!trimmedComment) {
       toast.error("Comment cannot be empty");
       return;
     }
-
-    try
-    {
+    try {
       setCommentLoading(true);
       await apiRequest(`/comments/${id}`, {
         method: "POST",
@@ -279,13 +285,9 @@ const BlogDetails = () => {
       setCommentText("");
       await refreshBlogDetails();
       toast.success("Comment added successfully");
-    }
-    catch (err) 
-    {
+    } catch (err) {
       toast.error(err.message || "Failed to add comment");
-    }
-    finally
-    {
+    } finally {
       setCommentLoading(false);
     }
   };
@@ -321,10 +323,7 @@ const BlogDetails = () => {
       setReplyLoadingId(parentId);
       await apiRequest(`/comments/${id}`, {
         method: "POST",
-        body: JSON.stringify({
-          text: replyText,
-          parentId,
-        }),
+        body: JSON.stringify({ text: replyText, parentId }),
       });
       setReplyDrafts((currentDrafts) => ({
         ...currentDrafts,
@@ -364,7 +363,7 @@ const BlogDetails = () => {
                 <img
                   src={blog.image}
                   alt={blog.title}
-                  className="h-[18rem] w-full object-cover sm:h-[24rem]"
+                  className="h-[18rem] w-full object-cover object-center sm:h-[24rem]"
                 />
               ) : null}
 
@@ -386,6 +385,7 @@ const BlogDetails = () => {
                   </p>
                 </div>
 
+                {/* Stats — always visible */}
                 <div className="grid gap-4 sm:grid-cols-3">
                   <StatCard label="Likes" value={stats.likeCount} />
                   <StatCard label="Dislikes" value={stats.dislikeCount} />
@@ -393,34 +393,41 @@ const BlogDetails = () => {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  <button
-                    type="button"
-                    disabled={reactionLoading !== ""}
-                    className={`inline-flex w-full items-center justify-center rounded-full px-5 py-3 font-semibold transition duration-200 ${stats.userReaction === "like"
-                      ? "bg-[#241916] text-white"
-                      : "border border-[rgba(93,64,55,0.22)] bg-white/70 text-[#241916] hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427]"
-                      } ${reactionLoading !== "" ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
-                    onClick={() => handleReaction("like")}
-                  >
-                    {reactionLoading === "like" ? "Updating..." : "Like"}
-                  </button>
-                  <button
-                    type="button"
-                    disabled={reactionLoading !== ""}
-                    className={`inline-flex w-full items-center justify-center rounded-full px-5 py-3 font-semibold transition duration-200 ${stats.userReaction === "dislike"
-                      ? "bg-[#b85c38] text-white"
-                      : "border border-[rgba(93,64,55,0.22)] bg-white/70 text-[#241916] hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427]"
-                      } ${reactionLoading !== "" ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
-                    onClick={() => handleReaction("dislike")}
-                  >
-                    {reactionLoading === "dislike" ? "Updating..." : "Dislike"}
-                  </button>
-                  <Link
-                    to="/realhome"
-                    className="inline-flex w-full items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-5 py-3 font-semibold text-[#241916] transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427] sm:w-auto"
-                  >
-                    Back to dashboard
-                  </Link>
+                  {isLoggedIn ? (
+                    <>
+                      <button
+                        type="button"
+                        disabled={reactionLoading !== ""}
+                        className={`inline-flex w-full items-center justify-center rounded-full px-5 py-3 font-semibold transition duration-200 ${stats.userReaction === "like"
+                            ? "bg-[#241916] text-white"
+                            : "border border-[rgba(93,64,55,0.22)] bg-white/70 text-[#241916] hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427]"
+                          } ${reactionLoading !== "" ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
+                        onClick={() => handleReaction("like")}
+                      >
+                        {reactionLoading === "like" ? "Updating..." : "Like"}
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={reactionLoading !== ""}
+                        className={`inline-flex w-full items-center justify-center rounded-full px-5 py-3 font-semibold transition duration-200 ${stats.userReaction === "dislike"
+                            ? "bg-[#b85c38] text-white"
+                            : "border border-[rgba(93,64,55,0.22)] bg-white/70 text-[#241916] hover:-translate-y-0.5 hover:border-[rgba(184,92,56,0.35)] hover:text-[#8e4427]"
+                          } ${reactionLoading !== "" ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
+                        onClick={() => handleReaction("dislike")}
+                      >
+                        {reactionLoading === "dislike" ? "Updating..." : "Dislike"}
+                      </button>
+                    </>
+                  ) : (
+                    <p className="text-sm text-[#6d5b56] italic">
+                      <Link to="/login" className="font-semibold text-[#b85c38] hover:text-[#8e4427]">
+                        Log in
+                      </Link>{" "}
+                      to like or dislike this post.
+                    </p>
+                  )}
+                  
                 </div>
               </div>
             </section>
@@ -432,33 +439,48 @@ const BlogDetails = () => {
                   <h2 className="mt-2 text-3xl font-semibold text-[#241916]">Comments</h2>
                 </div>
                 <p className="text-sm text-[#6d5b56]">
-                  Total comments: <span className="font-semibold text-[#241916]">{stats.commentCount}</span>
+                  Total comments:{" "}
+                  <span className="font-semibold text-[#241916]">{stats.commentCount}</span>
                 </p>
               </div>
 
-              <form onSubmit={handleCommentSubmit} className="mb-6 space-y-4 rounded-[1.5rem] border border-[rgba(93,64,55,0.12)] bg-white/80 p-5">
-                <label htmlFor="comment" className="block text-sm font-medium text-[#6d5b56]">
-                  Write a comment
-                </label>
-                <textarea
-                  id="comment"
-                  rows={4}
-                  value={commentText}
-                  onChange={(event) => setCommentText(event.target.value)}
-                  placeholder="Share your thoughts about this blog..."
-                  className="w-full resize-none rounded-2xl border border-[rgba(93,64,55,0.12)] bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)]"
-                />
-                <button
-                  type="submit"
-                  disabled={commentLoading}
-                  className={`inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] ${commentLoading ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
+              {isLoggedIn ? (
+                <form
+                  onSubmit={handleCommentSubmit}
+                  className="mb-6 space-y-4 rounded-[1.5rem] border border-[rgba(93,64,55,0.12)] bg-white/80 p-5"
                 >
-                  {commentLoading ? "Posting..." : "Post Comment"}
-                </button>
-              </form>
+                  <label htmlFor="comment" className="block text-sm font-medium text-[#6d5b56]">
+                    Write a comment
+                  </label>
+                  <textarea
+                    id="comment"
+                    rows={4}
+                    value={commentText}
+                    onChange={(event) => setCommentText(event.target.value)}
+                    placeholder="Share your thoughts about this blog..."
+                    className="w-full resize-none rounded-2xl border border-[rgba(93,64,55,0.12)] bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)]"
+                  />
+                  <button
+                    type="submit"
+                    disabled={commentLoading}
+                    className={`inline-flex w-full items-center justify-center rounded-full bg-[#b85c38] px-5 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(184,92,56,0.26)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#8e4427] ${commentLoading ? "cursor-not-allowed opacity-70" : ""} sm:w-auto`}
+                  >
+                    {commentLoading ? "Posting..." : "Post Comment"}
+                  </button>
+                </form>
+              ) : (
+                <div className="mb-6 rounded-[1.5rem] border border-[rgba(93,64,55,0.12)] bg-white/80 px-5 py-5 text-sm text-[#6d5b56]">
+                  <Link to="/login" className="font-semibold text-[#b85c38] hover:text-[#8e4427]">
+                    Log in
+                  </Link>{" "}
+                  to join the discussion and post a comment.
+                </div>
+              )}
+
               {comments.length > 0 ? (
                 <CommentTree
                   comments={comments}
+                  isLoggedIn={isLoggedIn}
                   replyDrafts={replyDrafts}
                   replyOpenId={replyOpenId}
                   replyLoadingId={replyLoadingId}

@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import { apiRequest, getBlogCardData } from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navi = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect( () => {
     const loadBlogs = async () => {
       try {
         const data = await apiRequest("/blogs");
+        console.log("data of Home After UseEffect");
+        console.log(data);
         setBlogs((data.blogs || []).map(getBlogCardData));
+        console.log("I am one of data");
+        console.log((data.blogs || []).map(getBlogCardData));
       } catch {
         setBlogs([]);
       } finally {
         setLoading(false);
       }
     };
-
     loadBlogs();
   }, []);
 
@@ -78,8 +83,15 @@ const Home = () => {
                     {item.description}
                   </p>
 
+                  {/* {console.log(item)} */}
+
                   <div className="pt-2">
-                    <span className="inline-flex cursor-default items-center justify-center rounded-full border border-[rgba(93,64,55,0.22)] bg-white/70 px-4 py-2.5 font-semibold text-[#241916]">Read preview</span>
+                    <button
+                      onClick={() => navi(`/guestblogdetails/${item.id}`)}
+                      className="inline-flex items-center justify-center rounded-full border px-4 py-2.5 font-semibold"
+                    >
+                      View Details
+                    </button>
                   </div>
                 </div>
               </article>

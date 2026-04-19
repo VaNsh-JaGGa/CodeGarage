@@ -31,11 +31,14 @@ export const getBlogCardData = (blog) => {
   };
 };
 
-export const apiRequest = async (endpoint, options = {}) => {
+export const apiRequest = async (endpoint, options = {}) => { // options provide the body and method of an api request and headers if needed to give forward
+  console.log("endpoint here");
+  console.log(endpoint);
+  console.log(options)
   const token = getToken();
   const headers = {
     "Content-Type": "application/json",
-    ...(options.headers || {}),
+    ...(options.headers || {}), // if users had give the header put it into the headers object
   };
 
   if (token) {
@@ -44,8 +47,13 @@ export const apiRequest = async (endpoint, options = {}) => {
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
-    headers,
+    headers, // the header in the options will be overrided by this.
   });
+
+  console.log("first is options and second is headers");
+  console.log(options);
+  console.log(headers);
+
   console.log("Helo I am Ressss");
   console.log(response);
   

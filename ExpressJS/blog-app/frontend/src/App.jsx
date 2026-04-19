@@ -1,41 +1,49 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import RealHome from "./components/RealHome"
+import HomeDashboard from "./components/HomeDashboard";
 import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AddBlog from "./components/AddBlog"
+import AddBlog from "./components/AddBlog";
 import BlogDetails from "./components/BlogDetails";
 const router = createBrowserRouter(
   [
     {
-      path:"/",
+      path: "/",
       element:
-      <ProtectedRoute type="guest">
-        <div>
-          <Home />
-        </div>
-      </ProtectedRoute>
+        <ProtectedRoute type="guest">
+          <div>
+            <Home />
+          </div>
+        </ProtectedRoute>
+    },
+    {
+      path: "/guestblogdetails/:id",
+      element: (
+        <ProtectedRoute type="guest">
+          <BlogDetails />
+        </ProtectedRoute>
+      )
     },
     {
       path: "/realhome",
       element:
         <ProtectedRoute type="private">
-          <RealHome/>
+          <HomeDashboard />
         </ProtectedRoute>
     },
     {
-      path:"/login",
+      path: "/login",
       element:
         <ProtectedRoute type="auth">
-        <Login />
+          <Login />
         </ProtectedRoute>
     },
     {
-      path:"/signup",
+      path: "/signup",
       element:
         <ProtectedRoute type="auth">
-        <Signup />
+          <Signup />
         </ProtectedRoute>
     },
     {
@@ -46,18 +54,18 @@ const router = createBrowserRouter(
         </ProtectedRoute>
     },
     {
-      path:"/addblog/:id",
+      path: "/addblog/:id",
       element:
-      <ProtectedRoute type="private">
-        <AddBlog/> 
-      </ProtectedRoute>
+        <ProtectedRoute type="private">
+          <AddBlog />
+        </ProtectedRoute>
     },
     {
       path: "/blog/:id",
       element:
-      <ProtectedRoute type="private">
-        <BlogDetails />
-      </ProtectedRoute>
+        <ProtectedRoute type="private">
+          <BlogDetails />
+        </ProtectedRoute>
     }
   ]
 )
@@ -65,7 +73,7 @@ const router = createBrowserRouter(
 const App = () => {
   return (
     <div>
-      <RouterProvider router ={router}/>
+      <RouterProvider router={router} />
     </div>
   )
 };

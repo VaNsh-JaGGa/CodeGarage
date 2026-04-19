@@ -21,12 +21,14 @@ const Signup = () => {
     setform((prev) => {
       return { ...prev, [name]: value };
     });
-    // console.log(form);
+    console.log(form);
 
     newErrors = Validationform(name, value, {
       ...form,
       [name]: value,
     });
+    console.log("here newError");
+    console.log(newErrors);
 
     SetError((prev) => {
       return { ...prev, ...newErrors };
@@ -40,7 +42,7 @@ const Signup = () => {
     SetError(Errors);
 
     console.log(Errors);
-    if (Object.keys(Errors).length > 0) {
+    if (Object.keys(Errors).length > 0){
       toast("There was an error creating the account", {
         style: {
           background: "#FFC0C0",
@@ -63,8 +65,11 @@ const Signup = () => {
           password: form.Password,
         }),
       });
+      console.log("here is  the response sir");
       console.log(response);
       const data = await response.json();
+      console.log("heree data");
+      console.log(data);
 
       if (!response.ok) {
         toast(data.message || "Signup failed", {
@@ -113,6 +118,7 @@ const Signup = () => {
           </div>
 
           <div className="flex flex-col gap-2">
+            {console.log(form)}
             <label htmlFor="name" className="text-sm font-medium text-[#6d5b56]">Name</label>
             <input
               type="text"

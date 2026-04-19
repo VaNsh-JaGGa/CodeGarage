@@ -8,7 +8,8 @@ const signup = async (req, res) => {
     {
         const { username, email, password } = req.body;
         const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) 
+        console.log(existingUser);
+        if (existingUser)
         {
             return res.status(400).json({ message: 'Email already registered' });
         }
@@ -70,7 +71,6 @@ const login = async (req, res) => {
         res.status(400).json({ message: 'Invalid Credentials', error: error.message });
     }
 };
-
 
 const logout = async (req, res) => {
     try 

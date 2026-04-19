@@ -4,6 +4,8 @@ const buildTree = (comments) => {
     const roots = [];
     comments.forEach(comment => {
         const obj = comment.toJSON();
+        console.log("hii buildTree obj Here");
+        console.log(obj);
         obj.replies = [];
         map[obj.id] = obj;
     });
@@ -86,7 +88,11 @@ const getComments = async (req, res) => {
             }],
             order: [['createdAt', 'ASC']],
         });
+
+        console.log("Here are the Comments");
+        console.log(allComments);
         const tree = buildTree(allComments);
+        console.log("after buildTree STructuring",tree);
         res.status(200).json(tree);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });

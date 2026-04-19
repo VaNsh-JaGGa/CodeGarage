@@ -20,7 +20,7 @@ const Blog = sequelize.define('Blog', {
     },
 
     content: {
-        type: DataTypes.TEXT,   
+        type: DataTypes.TEXT,
         allowNull: false,       
     },
 
@@ -28,7 +28,7 @@ const Blog = sequelize.define('Blog', {
         type: DataTypes.STRING,     
         allowNull: true,           
     },
-
+    
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
