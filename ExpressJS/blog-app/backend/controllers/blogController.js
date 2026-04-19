@@ -1,4 +1,6 @@
 const { Blog, User } = require('../models/Index');
+const { getCommentTree } = require('./commentController');
+const { getLikeStats } = require('./likeController');
 
 const getAllBlogs = async (req, res) => {
     try
@@ -50,12 +52,48 @@ const getBlogById = async (req, res) => {
     }
 };
 
+const getBlogDetails = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await Blog.findOne({
+            where: { id },
+            include: [{
+                model: User,
+                as: 'author',
+                attributes: ['username', 'email'],
+            }],
+        });
+
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
+
+        const [{ comments, commentCount }, stats] = await Promise.all([
+            getCommentTree(Number(id)),
+            getLikeStats(Number(id), req.user?.userId || null),
+        ]);
+
+        res.status(200).json({
+            message: 'Blog details fetched successfully',
+            blog,
+            comments,
+            stats: {
+                ...stats,
+                commentCount,
+            },
+        });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 const createBlog = async (req, res) => {
     try 
     {
-        const { title, content, image_url, category } = req.body;
+        const { title, content, category } = req.body;
         const userId = req.user.userId;
-        console.log('everything Fine');
+        const image_url = req.file ? `/uploads/blogs/${req.file.filename}` : null;
         const blog = await Blog.create({
             title,
             category: category || 'General',
@@ -75,7 +113,7 @@ const createBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
     try{
         const { id } = req.params;
-        const { title, content, image_url, category } = req.body;
+        const { title, content, category } = req.body;
         const blog = await Blog.findOne({ where: { id } });
         if (!blog) 
         {
@@ -85,7 +123,12 @@ const updateBlog = async (req, res) => {
         {
             return res.status(403).json({ message: 'Not authorized to edit this blog' });
         }
-        await blog.update({ title, content, image_url, category: category || 'General' });
+        await blog.update({
+            title,
+            content,
+            image_url: req.file ? `/uploads/blogs/${req.file.filename}` : blog.image_url,
+            category: category || 'General',
+        });
         res.status(200).json({ message: 'Blog updated successfully', blog });
     } 
     catch (error) 
@@ -114,4 +157,4 @@ const deleteBlog = async (req, res) => {
     }
 };
 
-module.exports = { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog };
+module.exports = { getAllBlogs, getBlogById, getBlogDetails, createBlog, updateBlog, deleteBlog };

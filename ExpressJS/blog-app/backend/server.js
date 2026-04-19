@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+const path = require('path');
 
 const { sequelize } = require('./models/Index');
 const authRoutes = require('./routes/authRoutes');
@@ -11,6 +12,7 @@ const likeRoutes = require('./routes/likeRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);

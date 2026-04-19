@@ -187,21 +187,16 @@ const CommentTree = ({
 
 // ── fetchBlogDetails: skips /likes call for guests ────────────────────────────
 const fetchBlogDetails = async (blogId) => {
-  const [blogResponse, commentsResponse, likesResponse] = await Promise.all([
-    apiRequest(`/blogs/${blogId}`),
-    apiRequest(`/comments/${blogId}`),
-    apiRequest(`/likes/${blogId}`),
-  ]);
-
-  const commentList = commentsResponse || [];
+  const detailsResponse = await apiRequest(`/blogs/${blogId}/details`);
+  const commentList = detailsResponse.comments || [];
   return {
-    blog: getBlogCardData(blogResponse.blog),
+    blog: getBlogCardData(detailsResponse.blog),
     comments: commentList,
     stats: {
-      likeCount: likesResponse.likeCount || 0,
-      dislikeCount: likesResponse.dislikeCount || 0,
-      userReaction: likesResponse.userReaction || null,
-      commentCount: countComments(commentList),
+      likeCount: detailsResponse.stats?.likeCount || 0,
+      dislikeCount: detailsResponse.stats?.dislikeCount || 0,
+      userReaction: detailsResponse.stats?.userReaction || null,
+      commentCount: detailsResponse.stats?.commentCount || countComments(commentList),
     },
   };
 };
@@ -244,9 +239,11 @@ const BlogDetails = () => {
   };
 
   // ✅ FIX: pass isLoggedIn to fetchBlogDetails
-  const refreshBlogDetails = async () => {
-    const data = await fetchBlogDetails(id);
-    applyBlogData(data);
+  const updateStats = (nextStats) => {
+    setStats((currentStats) => ({
+      ...currentStats,
+      ...nextStats,
+    }));
   };
 
   useEffect(() => {
@@ -256,11 +253,11 @@ const BlogDetails = () => {
   const handleReaction = async (type) => {
     try {
       setReactionLoading(type);
-      await apiRequest(`/likes/${id}`, {
+      const data = await apiRequest(`/likes/${id}`, {
         method: "POST",
         body: JSON.stringify({ type }),
       });
-      await refreshBlogDetails();
+      updateStats(data.stats || {});
       toast.success("Reaction updated");
     } catch (err) {
       toast.error(err.message || "Failed to update reaction");
@@ -278,12 +275,13 @@ const BlogDetails = () => {
     }
     try {
       setCommentLoading(true);
-      await apiRequest(`/comments/${id}`, {
+      const data = await apiRequest(`/comments/${id}`, {
         method: "POST",
         body: JSON.stringify({ text: trimmedComment }),
       });
       setCommentText("");
-      await refreshBlogDetails();
+      setComments(data.comments || []);
+      updateStats({ commentCount: data.commentCount || 0 });
       toast.success("Comment added successfully");
     } catch (err) {
       toast.error(err.message || "Failed to add comment");
@@ -321,7 +319,7 @@ const BlogDetails = () => {
     }
     try {
       setReplyLoadingId(parentId);
-      await apiRequest(`/comments/${id}`, {
+      const data = await apiRequest(`/comments/${id}`, {
         method: "POST",
         body: JSON.stringify({ text: replyText, parentId }),
       });
@@ -334,7 +332,8 @@ const BlogDetails = () => {
         ...currentGroups,
         [parentId]: true,
       }));
-      await refreshBlogDetails();
+      setComments(data.comments || []);
+      updateStats({ commentCount: data.commentCount || 0 });
       toast.success("Reply added successfully");
     } catch (err) {
       toast.error(err.message || "Failed to add reply");

@@ -1,11 +1,10 @@
 const { Comment, User, Blog } = require('../models/Index');
+
 const buildTree = (comments) => {
     const map = {};
     const roots = [];
     comments.forEach(comment => {
         const obj = comment.toJSON();
-        console.log("hii buildTree obj Here");
-        console.log(obj);
         obj.replies = [];
         map[obj.id] = obj;
     });
@@ -22,6 +21,36 @@ const buildTree = (comments) => {
         }
     });
     return roots;
+};
+
+const countComments = (commentList = []) => {
+    let totalComments = 0;
+
+    for (const singleComment of commentList) {
+        totalComments += 1;
+        totalComments += countComments(singleComment.replies || []);
+    }
+
+    return totalComments;
+};
+
+const getCommentTree = async (blogId) => {
+    const allComments = await Comment.findAll({
+        where: { blogId },
+        include: [{
+            model: User,
+            as: 'commenter',
+            attributes: ['id', 'username'],
+        }],
+        order: [['createdAt', 'ASC']],
+    });
+
+    const comments = buildTree(allComments);
+
+    return {
+        comments,
+        commentCount: countComments(comments),
+    };
 };
 
 const addComment = async (req, res) => {
@@ -51,18 +80,13 @@ const addComment = async (req, res) => {
             blogId,
             parentId: parentId || null,
         });
-        console.log(comment);
-        const commentWithUser = await Comment.findOne({
-            where: { id: comment.id },
-            include: [{
-                model: User,
-                as: 'commenter',
-                attributes: ['id', 'username'],
-            }],
-        });
+
+        const { comments, commentCount } = await getCommentTree(blogId);
+
         res.status(201).json({
             message: parentId ? 'Reply added successfully' : 'Comment added successfully',
-            comment: commentWithUser,
+            comments,
+            commentCount,
         });
     }
 
@@ -79,21 +103,8 @@ const getComments = async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: 'Blog not found' });
         }
-        const allComments = await Comment.findAll({
-            where: { blogId },
-            include: [{
-                model: User,
-                as: 'commenter',
-                attributes: ['id', 'username'],
-            }],
-            order: [['createdAt', 'ASC']],
-        });
-
-        console.log("Here are the Comments");
-        console.log(allComments);
-        const tree = buildTree(allComments);
-        console.log("after buildTree STructuring",tree);
-        res.status(200).json(tree);
+        const { comments } = await getCommentTree(blogId);
+        res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
@@ -155,4 +166,4 @@ const editComment = async (req, res) => {
     }
 };
 
-module.exports = { addComment, getComments, deleteComment, editComment };
+module.exports = { addComment, getComments, deleteComment, editComment, getCommentTree };

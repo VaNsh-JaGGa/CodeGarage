@@ -1,4 +1,26 @@
 const { Like, Blog } = require('../models/Index');
+
+const getLikeStats = async (blogId, userId = null) => {
+    const likeCount = await Like.count({
+        where: { blogId, type: 'like' },
+    });
+
+    const dislikeCount = await Like.count({
+        where: { blogId, type: 'dislike' },
+    });
+
+    let userReaction = null;
+
+    if (userId) {
+        const reaction = await Like.findOne({
+            where: { userId, blogId },
+        });
+        userReaction = reaction ? reaction.type : null;
+    }
+
+    return { likeCount, dislikeCount, userReaction };
+};
+
 const toggleLike = async (req, res) => {
 
     try {
@@ -21,15 +43,18 @@ const toggleLike = async (req, res) => {
         if (existingReaction){
             if (existingReaction.type === type) {
                 await existingReaction.destroy();
-                return res.status(200).json({ message: `${type} removed` });
+                const stats = await getLikeStats(blogId, userId);
+                return res.status(200).json({ message: `${type} removed`, stats });
             }
             else {
                 await existingReaction.update({ type });
-                return res.status(200).json({ message: `Switched to ${type}`, reaction: existingReaction });
+                const stats = await getLikeStats(blogId, userId);
+                return res.status(200).json({ message: `Switched to ${type}`, reaction: existingReaction, stats });
             }
         }
         const newReaction = await Like.create({ userId, blogId, type });
-        res.status(201).json({ message: `Blog ${type}d successfully`, reaction: newReaction });
+        const stats = await getLikeStats(blogId, userId);
+        res.status(201).json({ message: `Blog ${type}d successfully`, reaction: newReaction, stats });
     }
 
     catch (error) 
@@ -46,28 +71,8 @@ const getLikes = async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: 'Blog not found' });
         }
-        console.log("Blog Finded"); // blog milgaya
-        console.log(blog);
-        const likeCount = await Like.count({
-            where: { blogId, type: 'like' },
-        });
-        console.log("likeCount");
-        console.log(likeCount);
-        const dislikeCount = await Like.count({
-            where: { blogId, type: 'dislike' },
-        });
-        console.log("dislike Count")
-        console.log(dislikeCount);
-        let userReaction = null;
-        if(req.user) {
-            const reaction = await Like.findOne({
-                where: { userId: req.user.userId, blogId },
-            });
-            userReaction = reaction ? reaction.type : null;
-        }
-        res.status(200).json(
-            { likeCount, dislikeCount, userReaction }
-        ); 
+        const stats = await getLikeStats(blogId, req.user?.userId || null);
+        res.status(200).json(stats); 
     }
 
     catch(error)
@@ -76,4 +81,4 @@ const getLikes = async (req, res) => {
     }
 };
 
-module.exports = { toggleLike, getLikes };
+module.exports = { toggleLike, getLikes, getLikeStats };

@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://localhost:5000/api";
+const API_ORIGIN = new URL(API_BASE_URL).origin;
 
 export const getToken = () => localStorage.getItem("token");
 
@@ -19,12 +20,18 @@ export const checkLogin = () => {
 };
 
 export const getBlogCardData = (blog) => {
+  const imageUrl = blog.image_url
+    ? blog.image_url.startsWith("http")
+      ? blog.image_url
+      : `${API_ORIGIN}${blog.image_url}`
+    : "";
+
   return {
     id: blog.id,
     title: blog.title,
     description: blog.content,
     category: blog.category || "General",
-    image: blog.image_url || "",
+    image: imageUrl,
     date: new Date(blog.createdAt).toDateString(),
     author: blog.author?.username || "Unknown",
     userId: blog.userId,
@@ -35,9 +42,10 @@ export const apiRequest = async (endpoint, options = {}) => { // options provide
   console.log("endpoint here");
   console.log(endpoint);
   console.log(options)
+  const isFormData = options.body instanceof FormData;
   const token = getToken();
   const headers = {
-    "Content-Type": "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...(options.headers || {}), // if users had give the header put it into the headers object
   };
 

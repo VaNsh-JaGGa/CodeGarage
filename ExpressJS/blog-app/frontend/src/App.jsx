@@ -5,7 +5,7 @@ import HomeDashboard from "./components/HomeDashboard";
 import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddBlog from "./components/AddBlog";
-import BlogDetails from "./components/BlogDetails";
+import BlogDetailsPage from "./components/blog-details/BlogDetailsPage";
 const router = createBrowserRouter(
   [
     {
@@ -21,7 +21,7 @@ const router = createBrowserRouter(
       path: "/guestblogdetails/:id",
       element: (
         <ProtectedRoute type="guest">
-          <BlogDetails />
+          <BlogDetailsPage />
         </ProtectedRoute>
       )
     },
@@ -63,9 +63,9 @@ const router = createBrowserRouter(
     {
       path: "/blog/:id",
       element:
-        <ProtectedRoute type="private">
-          <BlogDetails />
-        </ProtectedRoute>
+      <ProtectedRoute type="private">
+        <BlogDetailsPage />
+      </ProtectedRoute>
     }
   ]
 )

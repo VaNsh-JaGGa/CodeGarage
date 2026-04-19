@@ -6,15 +6,29 @@ import toast, { Toaster } from "react-hot-toast";
 import { apiRequest } from "../utils/api";
 import FixedNavBar from "./FixedNavBar";
 
+const getPreviewUrl = (imagePath) => {
+    if (!imagePath) {
+        return "";
+    }
+
+    if (imagePath.startsWith("http")) {
+        return imagePath;
+    }
+
+    return `http://localhost:5000${imagePath}`;
+};
+
 const AddBlog = () => {
     const navi = useNavigate();
     const { id } = useParams();
     const [form,setForm] = useState({
-        image: "",
+        image: null,
         title: "",
         category: "",
         description: ""
     });
+    const [imagePreview, setImagePreview] = useState("");
+    const [selectedFileName, setSelectedFileName] = useState("");
 
     useEffect(() => {
         const loadBlogForEditing = async () => {
@@ -24,11 +38,13 @@ const AddBlog = () => {
             try{
                 const data = await apiRequest(`/blogs/${id}`);
                 setForm({
-                    image: data.blog.image_url || "",
+                    image: null,
                     title: data.blog.title || "",
                     category: data.blog.category || "",
                     description: data.blog.content || ""
                 });
+                setImagePreview(getPreviewUrl(data.blog.image_url || ""));
+                setSelectedFileName("");
             }
             catch (error) {
                 toast.error(error.message || "Failed to load blog");
@@ -43,10 +59,9 @@ const AddBlog = () => {
 
         let error = "";
         if (name === "image") {
-            if (!value) {
-                error = "Image URL is required";
-            } else if (!/^https?:\/\/.+/.test(value)) {
-                error = "Enter a valid URL";
+            const hasExistingImage = Boolean(imagePreview);
+            if (!value && !hasExistingImage) {
+                error = "Please upload an image";
             }
         }
 
@@ -87,6 +102,27 @@ const AddBlog = () => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files?.[0] || null;
+
+        setForm((prev) => ({
+            ...prev,
+            image: file
+        }));
+
+        setSelectedFileName(file ? file.name : "");
+        setErrors((prev) => ({
+            ...prev,
+            image: validateField("image", file)
+        }));
+
+        if (!file) {
+            return;
+        }
+
+        setImagePreview(URL.createObjectURL(file));
+    };
+
     const validateForm = () => {
         let newErrors = {};
 
@@ -110,23 +146,25 @@ const AddBlog = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const payload = {
-                    title: form.title,
-                    content: form.description,
-                    image_url: form.image,
-                    category: form.category
-                };
+                const payload = new FormData();
+                payload.append("title", form.title);
+                payload.append("content", form.description);
+                payload.append("category", form.category);
+
+                if (form.image) {
+                    payload.append("image", form.image);
+                }
 
                 if (id !== undefined) {
                     await apiRequest(`/blogs/${id}`, {
                         method: "PUT",
-                        body: JSON.stringify(payload)
+                        body: payload
                     });
                     toast.success("Blog updated successfully");
                 } else {
                     await apiRequest("/blogs", {
                         method: "POST",
-                        body: JSON.stringify(payload)
+                        body: payload
                     });
                     toast.success("Blog created successfully");
                 }
@@ -155,15 +193,25 @@ const AddBlog = () => {
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="img" className="text-sm font-medium text-[#6d5b56]">Image URL</label>
+                            <label htmlFor="img" className="text-sm font-medium text-[#6d5b56]">Upload image</label>
                             <input
-                                type="text"
+                                type="file"
                                 id="img"
                                 name="image"
-                                value={form.image}
-                                onChange={handleChange}
-                                className={`w-full rounded-2xl border bg-white/90 px-4 py-3.5 outline-none transition focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)] ${errors.image ? "border-red-400 ring-4 ring-red-100" : "border-[rgba(93,64,55,0.12)]"}`}
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className={`w-full rounded-2xl border bg-white/90 px-4 py-3.5 outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-[#241916] file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-[#3a2925] focus:border-[rgba(184,92,56,0.5)] focus:ring-4 focus:ring-[rgba(184,92,56,0.12)] ${errors.image ? "border-red-400 ring-4 ring-red-100" : "border-[rgba(93,64,55,0.12)]"}`}
                             />
+                            <span className="text-sm text-[#6d5b56]">
+                                {selectedFileName || (imagePreview ? "Using current image" : "No file selected")}
+                            </span>
+                            {imagePreview ? (
+                                <img
+                                    src={imagePreview}
+                                    alt="Selected preview"
+                                    className="h-56 w-full rounded-2xl object-cover"
+                                />
+                            ) : null}
                             {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
                         </div>
 
