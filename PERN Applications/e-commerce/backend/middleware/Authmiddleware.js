@@ -24,6 +24,8 @@ const protect = (req,res,next)=>{
         // the decoded will hold something like this {id:1,role:"onwer"}
 
         const user = User.findByPk(decoded.id);
+        console.log("user nikal liya query krke");
+        console.log(user);
         if(!user || user.token != token){
             return res.status(401).json({
                 message:"Token Not Found In User Record"

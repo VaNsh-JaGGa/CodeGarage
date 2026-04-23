@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -81,7 +79,6 @@ const LoginPage = () => {
                         {error}
                     </div>
                 )}
-
             
                 <form onSubmit={handleSubmit} className="space-y-5">
             
@@ -145,6 +142,13 @@ const LoginPage = () => {
                         {loading ? "Signing in…" : "Sign In"}
                     </button>
                 </form>
+                    
+                <p className="text-center text-slate-400 text-sm mt-6">
+                    New here?{" "}
+                    <Link to="/signup" className="text-blue-400 hover:text-blue-300 font-medium transition">
+                        Create an account
+                    </Link>
+                </p>
 
             </div>
         </div>
