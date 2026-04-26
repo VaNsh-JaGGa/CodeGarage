@@ -11,6 +11,7 @@ const signup = async (req, res) => {
         const existingUser = await User.findOne(
             { where: { email }}
         );
+        
         if (existingUser) {
             return res.status(400).json({ message: "Email already registered" });
         }
@@ -66,7 +67,6 @@ const login = async (req, res) => {
         console.log(token);
         console.log(typeof(token));
         user.token = token;
-
         await user.save();                        // db me user ke data ko update krdon jee
 
         return res.status(200).json({
@@ -102,5 +102,4 @@ const logout = async (req, res) => {
     }
 };
 
-// export krdon functions routes ke lie.
 module.exports = { signup, login, logout };

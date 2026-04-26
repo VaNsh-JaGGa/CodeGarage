@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ const LoginPage = () => {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [showPassword,setPassword] = useState(false);
+    const [showPassword, setPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -41,11 +42,13 @@ const LoginPage = () => {
             console.log(data);
 
             if (!response.ok) {
+                toast.error(data.message || "Login failed");
                 setError(data.message || "Login failed");
                 setLoading(false);
                 return;
             }
 
+            toast.success("Logged in successfully!");
             login(data.user, data.token); // saving the data globally
 
             if (data.user.role === "admin") navigate("/admin");
@@ -54,36 +57,37 @@ const LoginPage = () => {
 
         } catch (err) {
             console.error("Login Error:", err);
+            toast.error("Cannot connect to server.");
             setError("Cannot connect to server. Is the backend running?");
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
 
-            <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl p-8">
+            <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl p-6 sm:px-8 sm:py-6">
 
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-500 rounded-xl mb-4 shadow-lg shadow-blue-500/30">
-                        <span className="text-2xl">🛒</span>
+                <div className="text-center mb-5 sm:mb-6">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-500 rounded-xl mb-3 shadow-lg shadow-blue-500/30">
+                        <span className="text-xl">🛒</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h1>
-                    <p className="text-slate-400 mt-1 text-sm">Sign in to your ShopSphere account</p>
+                    <h1 className="text-2xl font-bold text-white tracking-tight">Welcome Back</h1>
+                    <p className="text-slate-400 mt-1 text-xs sm:text-sm">Sign in to your ShopSphere account</p>
                 </div>
 
                 {console.log("error in the starting")}
                 {console.log(error)}
                 {error && (
-                    <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3 mb-6">
+                    <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-2.5 mb-5">
                         {error}
                     </div>
                 )}
-            
-                <form onSubmit={handleSubmit} className="space-y-5">
-            
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+
                     <div>
-                        <label className="block text-slate-300 text-sm font-medium mb-1.5">
+                        <label className="block text-slate-300 text-sm font-medium mb-1">
                             Email Address
                         </label>
                         <input
@@ -93,13 +97,13 @@ const LoginPage = () => {
                             onChange={handleChange}
                             placeholder="you@example.com"
                             className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500
-                            rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500
+                            rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500
                             focus:ring-1 focus:ring-blue-500 transition"
                         />
                     </div>
 
                     <div>
-                        <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center justify-between mb-1">
                             <label className="text-slate-300 text-sm font-medium">Password</label>
                         </div>
                         <div className="relative">
@@ -110,7 +114,7 @@ const LoginPage = () => {
                                 onChange={handleChange}
                                 placeholder="Your password"
                                 className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500
-                                rounded-xl px-4 py-3 pr-12 text-sm focus:outline-none focus:border-blue-500
+                                rounded-xl px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-blue-500
                                 focus:ring-1 focus:ring-blue-500 transition"
                             />
                             <button
@@ -131,19 +135,19 @@ const LoginPage = () => {
                             </button>
                         </div>
                     </div>
-   
+
                     <button
                         type="submit"
                         disabled={loading}
                         className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800
-                        disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl
-                        transition duration-200 shadow-lg shadow-blue-600/20 mt-2"
+                        disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-xl
+                        transition duration-200 shadow-lg shadow-blue-600/20 mt-4"
                     >
                         {loading ? "Signing in…" : "Sign In"}
                     </button>
                 </form>
-                    
-                <p className="text-center text-slate-400 text-sm mt-6">
+
+                <p className="text-center text-slate-400 text-sm mt-5">
                     New here?{" "}
                     <Link to="/signup" className="text-blue-400 hover:text-blue-300 font-medium transition">
                         Create an account

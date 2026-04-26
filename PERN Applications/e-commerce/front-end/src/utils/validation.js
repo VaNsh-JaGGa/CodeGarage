@@ -25,7 +25,7 @@ export const validateField = (name, value) => {
   return error;
 };
 
-export const validateSignupForm = (formData) => {
+export const  validateSignupForm = (formData) => {
   const errors = {};
   Object.keys(formData).forEach((key) => {
     const error = validateField(key, formData[key]);

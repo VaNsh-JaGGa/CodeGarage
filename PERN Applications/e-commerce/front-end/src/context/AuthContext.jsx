@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     //local storage se initialize krege taki user logged in rhe refresh k bad bhi.
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem("user");
+        console.log("savedUser from the local storage");
+        console.log(savedUser);
         return savedUser ? JSON.parse(savedUser) : null;
     });
 
@@ -18,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     // iisko call krege after the successful login API response
     const login = (userData, authToken) => {
         setUser(userData);
+        // user usestate ke andar abhi {id,name,email,role} store ho gaya h 
         console.log("user is stored in the global state and localstorage");
         console.log(user);
         setToken(authToken);
@@ -36,10 +39,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     const value = {
-        user,    // { id, name, email, role } or null
-        token,
-        login, // login k bad ye chlega
-        logout, // logout ke time yeh chalega
+        user,   // { id, name, email, role } or null
+        token,  
+        login,  //  login SUBMIT button click hone pe ye chalega
+        logout, //  logout ke time yeh chalega
         isLoggedIn: !!token, //true
     }
     // step 3:Create the Provider, Who Will Provide the Value Object

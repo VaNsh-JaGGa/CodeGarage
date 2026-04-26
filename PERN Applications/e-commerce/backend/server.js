@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors');
 const {sequelize} = require('./models/index');
 const authRoutes = require('./routes/authRoutes')
+const productRoutes = require('./routes/productRoutes');
+const adminRoutes = require('./controllers/adminController');
 const PORT=5000;
 
 // CORS ( cross origin resource sharing )
@@ -13,6 +15,8 @@ app.use(cors());
 // data ka format change krke req.body me store krdega, agar ye nahi krege tooo req.body undefined aayegi or response me error aayegi
 app.use(express.json());
 app.use("/api/auth",authRoutes);
+app.use('/api/products',productRoutes);
+app.use('/api/admin',adminRoutes);
 
 const startServer = async () =>{
     try{
