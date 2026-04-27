@@ -13,23 +13,17 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// ── DELETE A USER ─────────────────────────────────────────────────────────────
 const deleteUser = async (req, res) => {
     try {
-        const { id } = req.params; // User ID from URL
-
-        const user = await User.findByPk(id); // Find user by primary key
+        const { id } = req.params;
+        const user = await User.findByPk(id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-        // Prevent deleting admin accounts for safety
         if (user.role === "admin") {
             return res.status(403).json({ message: "Cannot delete admin accounts" });
         }
-
-        await user.destroy(); // Delete user row from DB
-
+        await user.destroy();
         return res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
         console.error("Delete user error:", error);
@@ -37,8 +31,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-// ── GET PLATFORM STATS ────────────────────────────────────────────────────────
-// Returns counts used by the admin dashboard summary cards
 const getStats = async (req, res) => {
     try {
         const userCount = await User.count();    // How many users total
@@ -56,30 +48,28 @@ const getStats = async (req, res) => {
     }
 };
 
-// ── GET ALL ORDERS (ADMIN VIEW) ───────────────────────────────────────────────
-// Admin can see every order placed on the platform with buyer and item details
 const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.findAll({
             include: [
                 {
-                    model: User,              // JOIN the buyer's info
+                    model: User,
                     as: "buyer",
-                    attributes: ["id", "name", "email"], // Only safe fields
+                    attributes: ["id", "name", "email"],
                 },
                 {
-                    model: OrderItem,         // JOIN order items
+                    model: OrderItem,   
                     as: "items",
                     include: [
                         {
-                            model: Product,       // JOIN product name inside each item
+                            model: Product,
                             as: "product",
                             attributes: ["id", "name", "price"],
                         },
                     ],
                 },
             ],
-            order: [["createdAt", "DESC"]], // Most recent orders first
+            order: [["createdAt", "DESC"]], 
         });
 
         return res.status(200).json({ orders });
@@ -89,13 +79,10 @@ const getAllOrders = async (req, res) => {
     }
 };
 
-// ── UPDATE ORDER STATUS ───────────────────────────────────────────────────────
-// Admin can change the status of any order
-// e.g. "pending" -> "processing" -> "shipped" -> "delivered"
 const updateOrderStatus = async (req, res) => {
     try {
-        const { id } = req.params;        // Order ID from URL
-        const { status } = req.body;      // New status from request body
+        const { id } = req.params;  
+        const { status } = req.body;
 
         // Validate the status value
         const validStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
@@ -103,7 +90,7 @@ const updateOrderStatus = async (req, res) => {
             return res.status(400).json({ message: "Invalid status value" });
         }
 
-        const order = await Order.findByPk(id); // Find the order
+        const order = await Order.findByPk(id)
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
         }

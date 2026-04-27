@@ -4,7 +4,7 @@ const cors = require('cors');
 const {sequelize} = require('./models/index');
 const authRoutes = require('./routes/authRoutes')
 const productRoutes = require('./routes/productRoutes');
-const adminRoutes = require('./controllers/adminController');
+const adminRoutes = require('./routes/adminRoutes');
 const PORT=5000;
 
 // CORS ( cross origin resource sharing )
