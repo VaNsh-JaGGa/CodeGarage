@@ -5,6 +5,8 @@ const {sequelize} = require('./models/index');
 const authRoutes = require('./routes/authRoutes')
 const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const PORT=5000;
 
 // CORS ( cross origin resource sharing )
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use("/api/auth",authRoutes);
 app.use('/api/products',productRoutes);
 app.use('/api/admin',adminRoutes);
+app.use('/api/cart',cartRoutes);
+app.use('/api/order',orderRoutes);
 
 const startServer = async () =>{
     try{

@@ -84,7 +84,6 @@ const updateOrderStatus = async (req, res) => {
         const { id } = req.params;  
         const { status } = req.body;
 
-        // Validate the status value
         const validStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({ message: "Invalid status value" });
@@ -95,8 +94,8 @@ const updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
-        order.status = status;            // Update status
-        await order.save();               // Save to DB
+        order.status = status;
+        await order.save();
 
         return res.status(200).json({ message: "Order status updated", order });
     } catch (error) {
@@ -106,8 +105,3 @@ const updateOrderStatus = async (req, res) => {
 };
 
 module.exports = { getAllUsers, deleteUser, getStats, getAllOrders, updateOrderStatus };
-// deleteUser        -> Find user -> reject if admin -> destroy row
-// getStats          -> Count users, products, orders -> return 3 numbers
-// getAllOrders       -> Find ALL orders -> JOIN buyer + items + products
-// updateOrderStatus -> Find order by ID -> validate new status -> update + save
-// ─────────────────────────────────────────────────────────────────────────────
