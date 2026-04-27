@@ -6,6 +6,8 @@ import Home from "./components/Home";
 import ProtectedRoute from './components/ProtectedRoute';
 import SellerDashboard from './components/SellerDashboard';
 import AdminDashboard from './components/AdminDashboard';
+import CartPage from './components/CartPage';
+import OrdersPage from './components/OrdersPage';
 
 const router = createBrowserRouter(
   [
@@ -42,6 +44,20 @@ const router = createBrowserRouter(
       element:
       <ProtectedRoute>
         <AdminDashboard/>
+      </ProtectedRoute>
+    },
+    {
+      path:"/cart",
+      element:
+      <ProtectedRoute>
+        <CartPage/>
+      </ProtectedRoute>
+    },
+    {
+      path:"/orders",
+      element:
+      <ProtectedRoute>
+        <OrdersPage/>
       </ProtectedRoute>
     }
   ]

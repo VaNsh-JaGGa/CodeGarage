@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
                 setAdded(true);
                 setTimeout(() => setAdded(false), 2000);
             }
-        }
+            }
         catch (err) {
             console.error("Add to cart error:", err);
         } finally {
@@ -78,11 +78,11 @@ const ProductCard = ({ product }) => {
                     onClick={handleAddToCart}
                     disabled={product.stock === 0 || addingToCart || added} // Disabled when out of stock
                     className={`w-full py-2.5 rounded-xl text-sm font-semibold transition duration-200
-            ${added
-                            ? "bg-green-600 text-white"                         // Success state
+                            ${added
+                            ? "bg-green-600 text-white"               
                             : product.stock === 0
-                                ? "bg-slate-700 text-slate-500 cursor-not-allowed" // Disabled state
-                                : "bg-blue-600 hover:bg-blue-500 text-white"       // Normal state
+                                ? "bg-slate-700 text-slate-500 cursor-not-allowed" 
+                                : "bg-blue-600 hover:bg-blue-500 text-white"
                         }`}
                 >
                     {added ? "✓ Added to Cart" : addingToCart ? "Adding..." : "Add to Cart"}

@@ -1,4 +1,3 @@
-const { Model } = require("sequelize");
 const { Cart, Product, Order, OrderItem, User } = require("../models/index");
 const { sequelize } = require("../models/index");
 
@@ -50,20 +49,85 @@ const getOrderById = async (req, res) => {
 }
 
 const placeOrder = async (req, res) => {
-    // sequelize.transaction ek feature hai jisse hum multiple database operations ko ek sath perform kr skte hain.
-    // iska main use tb hota hai jb hum chahate hain ki agar ek bhi operation fail ho
-    // toh pura process rollback ho jaye.
-    // rollback matlab purane database state me le jaye
     const transaction = await sequelize.transaction();
+
     try {
-        
+        const cartItems = await Cart.findAll({
+            where: { buyerId: req.user.id },
+            include: [{ model: Product, as: "product" }],
+            transaction,
+        });
+
+        if (cartItems.length === 0) {
+            await transaction.rollback();
+            return res.status(400).json({
+                message: "Your cart is empty",
+            });
+        }
+
+        for (const item of cartItems) {
+            if (!item.product) {
+                await transaction.rollback();
+                return res.status(404).json({
+                    message: "One of the products in your cart no longer exists",
+                });
+            }
+
+            if (item.product.stock < item.quantity) {
+                await transaction.rollback();
+                return res.status(400).json({
+                    message: `Not enough stock for "${item.product.name}". Available: ${item.product.stock}`,
+                });
+            }
+        }
+
+        const totalPrice = cartItems.reduce((sum, item) => {
+            return sum + parseFloat(item.product.price) * item.quantity;
+        }, 0);
+
+        const order = await Order.create(
+            {
+                buyerId: req.user.id,
+                totalPrice: totalPrice.toFixed(2),
+                status: "pending",
+            },
+            { transaction }
+        );
+
+        const orderItems = cartItems.map((item) => ({
+            orderId: order.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.product.price,
+        }));
+
+        await OrderItem.bulkCreate(orderItems, { transaction });
+
+        for (const item of cartItems) {
+            item.product.stock -= item.quantity;
+            await item.product.save({ transaction });
+        }
+
+        await Cart.destroy({
+            where: { buyerId: req.user.id },
+            transaction,
+        });
+
+        await transaction.commit();
+
+        return res.status(201).json({
+            message: "Order placed successfully",
+            order: {
+                id: order.id,
+                totalPrice: order.totalPrice,
+                status: order.status,
+            },
+        });
     } catch (error) {
-        await transaction.rollback(); // If anything threw an error, undo everything
+        await transaction.rollback();
         console.error("Place order error:", error);
         return res.status(500).json({ message: "Failed to place order" });
     }
 };
-
-
 
 module.exports = { getMyOrders, getOrderById, placeOrder }

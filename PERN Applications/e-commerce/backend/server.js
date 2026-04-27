@@ -8,7 +8,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const PORT=5000;
-
 // CORS ( cross origin resource sharing )
 // by default browser request block kr deta hai agar backend or frontend different origins pr run ho rkhe hote hai 
 // too agar hame request bhejni h to different origin we need to use the cors library
