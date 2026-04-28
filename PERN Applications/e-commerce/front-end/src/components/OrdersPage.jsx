@@ -24,13 +24,14 @@ const OrdersPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        
         const data = await response.json();
 
         if (!response.ok) {
           throw new Error(data.message || "Failed to load orders");
         }
-
+        console.log("getorder Response");
+        console.log(data);
         setOrders(data.orders || []);
       } catch (err) {
         toast.error(err.message || "Failed to load orders");
@@ -85,7 +86,6 @@ const OrdersPage = () => {
               >
                 <div
                   className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition"
-                  onClick={() => setExpanded(expanded === order.id ? null : order.id)}
                 >
                   <div>
                     <p className="text-white font-semibold">Order #{order.id}</p>
@@ -105,50 +105,9 @@ const OrdersPage = () => {
                       Rs. {parseFloat(order.totalPrice || 0).toFixed(2)}
                     </p>
                     <p className="text-slate-500 text-xs mt-0.5">
-                      {expanded === order.id ? "Hide" : "Details"}
                     </p>
                   </div>
                 </div>
-
-                {expanded === order.id && (
-                  <div className="border-t border-white/10 px-4 py-3 space-y-3">
-                    {order.items?.map((item) => (
-                      <div key={item.id} className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-slate-800 overflow-hidden flex-shrink-0">
-                          {item.product?.image_url ? (
-                            <img
-                              src={item.product.image_url}
-                              alt={item.product?.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">
-                              No Image
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <p className="text-slate-200 text-sm truncate">
-                            {item.product?.name || "Unknown Product"}
-                          </p>
-                          <p className="text-slate-500 text-xs">Qty: {item.quantity}</p>
-                        </div>
-
-                        <p className="text-slate-300 text-sm font-medium">
-                          Rs. {(parseFloat(item.price || 0) * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                    ))}
-
-                    <div className="border-t border-white/10 pt-3 flex justify-between">
-                      <span className="text-slate-400 text-sm">Order Total</span>
-                      <span className="text-white font-bold">
-                        Rs. {parseFloat(order.totalPrice || 0).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
           </div>

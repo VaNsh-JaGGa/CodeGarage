@@ -15,6 +15,7 @@ const signup = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "Email already registered" });
         }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log("this is hashed password");
         const newUser = await User.create(
@@ -23,7 +24,7 @@ const signup = async (req, res) => {
             password: hashedPassword,     
             role:role || "buyer"}
         )
-        console.log("this is the newUser")
+        console.log("this is the newUser");
         console.log(newUser);
         return res.status(201).json({
             message: "Signup successful",
@@ -96,7 +97,8 @@ const logout = async (req, res) => {
         user.token = null;
         await user.save();
         return res.status(200).json({ message: "Logged out successfully" });
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Logout error:", error);
         return res.status(500).json({ message: "Server error during logout" });
     }

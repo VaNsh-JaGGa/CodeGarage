@@ -1,16 +1,10 @@
-// ye component sare products show krega or add krne ke lie functionality provide krega.
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../common/NavBar";
 
 const SellerDashboard = () => {
-    const { token, user } = useAuth();           // Token le aao api call ke lie and user for name
-    const [products, setProducts] = useState([]); // Seller's own products
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [showForm, setShowForm] = useState(false); // toggle and show form
-
-    // New Product ki state
+    const { token, user } = useAuth();
+    const [showForm, setShowForm] = useState(false);
     const [newProduct, setNewProduct] = useState({
         name: "",
         description: "",
@@ -21,29 +15,8 @@ const SellerDashboard = () => {
     const [formError, setFormError] = useState("");
     const [formLoading, setFormLoading] = useState(false);
 
-    //fetch karo products ko
-    const fetchMyProducts = async () => {
-        try {
-            const response = await fetch("http://localhost:5000/api/products/my-products", {
-                headers: { Authorization: `Bearer ${token}` }, // Auth header
-            });
-            const data = await response.json();
-            if (response.ok) setProducts(data.products);
-            else setError(data.message);
-        } catch {
-            setError("Failed to fetch products");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchMyProducts();
-    }, []);
-
-    // Add new Product Function --- db me store krega api call karke
     const handleAddProduct = async (e) => {
-        e.preventDefault(); // Prevent page reload
+        e.preventDefault();
         setFormError("");
         setFormLoading(true);
 
@@ -54,7 +27,7 @@ const SellerDashboard = () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(newProduct), // Send form data
+                body: JSON.stringify(newProduct),
             });
             const data = await response.json();
 
@@ -62,34 +35,14 @@ const SellerDashboard = () => {
                 setFormError(data.message || "Failed to add product");
                 return;
             }
-            { showform ? "Cancel" : "Add Product" }
-    
-            fetchMyProducts();
+
             setNewProduct({ name: "", description: "", price: "", stock: "", image_url: "" });
-            setShowForm(false); // Hide the form
+            setShowForm(false);
+            alert("Product Added Successfully!");
         } catch {
             setFormError("Server error");
         } finally {
             setFormLoading(false);
-        }
-    };
-
-    //delete product function 
-    const handleDelete = async (productId) => {
-        if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-        try {
-            const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
-                method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (response.ok) {
-                // remove from the localStorage
-                setProducts(products.filter((p) => p.id !== productId));
-            }
-        } catch {
-            alert("Failed to delete");
         }
     };
 
@@ -112,7 +65,7 @@ const SellerDashboard = () => {
                     </button>
                 </div>
 
-                {showForm && (
+                {showForm ? (
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
                         <h2 className="text-white font-semibold mb-4">New Product</h2>
 
@@ -203,62 +156,11 @@ const SellerDashboard = () => {
                             </div>
                         </form>
                     </div>
-                )}
-
-                {/* products table --- basicallly products ko show karta hai  */}
-                {loading ? (
-                    <div className="flex justify-center py-20">
-                        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                ) : error ? (
-                    <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-4 text-center">
-                        {error}
-                    </div>
-                ) : products.length === 0 ? (
-                    <div className="text-center text-slate-400 py-20">
-                        <p className="text-4xl mb-3">📦</p>
-                        <p className="text-lg font-medium">No products yet</p>
-                        <p className="text-sm mt-1">Click "+ Add Product" to get started</p>
-                    </div>
                 ) : (
-                    //tablee
-                    <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                        <table className="w-full text-sm">
-                            <thead>
-                                <tr className="border-b border-white/10 text-slate-400">
-                                    <th className="text-left px-6 py-4 font-medium">Product</th>
-                                    <th className="text-left px-6 py-4 font-medium">Price</th>
-                                    <th className="text-left px-6 py-4 font-medium">Stock</th>
-                                    <th className="text-left px-6 py-4 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {products.map((product) => (
-                                    <tr key={product.id} className="border-b border-white/5 hover:bg-white/5 transition">
-                                        <td className="px-6 py-4 text-white font-medium">{product.name}</td>
-                                        <td className="px-6 py-4 text-blue-400">₹{parseFloat(product.price).toFixed(2)}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 rounded-full text-xs border
-                                                    ${product.stock > 0
-                                                    ? "text-green-400 bg-green-500/10 border-green-500/20"
-                                                    : "text-red-400 bg-red-500/10 border-red-500/20"
-                                            }`}>
-                                                {product.stock} units
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <button
-                                                onClick={() => handleDelete(product.id)}
-                                                className="text-red-400 hover:text-red-300 text-xs border border-red-500/20
-                                                hover:border-red-500/40 px-3 py-1 rounded-lg transition"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center text-slate-400">
+                        <p className="text-4xl mb-3">🏪</p>
+                        <p className="text-lg font-medium">Welcome to your dashboard!</p>
+                        <p className="text-sm mt-1">Click "+ Add Product" to create a new product listing, or navigate to "My Products" to view and manage your inventory.</p>
                     </div>
                 )}
             </div>

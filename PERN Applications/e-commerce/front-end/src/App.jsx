@@ -8,6 +8,7 @@ import SellerDashboard from './components/SellerDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import CartPage from './components/CartPage';
 import OrdersPage from './components/OrdersPage';
+import MyProducts from './components/MyProducts';
 
 const router = createBrowserRouter(
   [
@@ -28,35 +29,42 @@ const router = createBrowserRouter(
     {
       path:"/home",
       element:
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["buyer"]}>
         <Home/>
       </ProtectedRoute>
     },
     {
       path:"/seller",
       element:
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["seller"]}>
         <SellerDashboard/>
+      </ProtectedRoute>
+    },
+    {
+      path:"/seller/products",
+      element:
+      <ProtectedRoute allowedRoles={["seller"]}>
+        <MyProducts/>
       </ProtectedRoute>
     },
     {
       path:"/admin",
       element:
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin"]}>
         <AdminDashboard/>
       </ProtectedRoute>
     },
     {
       path:"/cart",
       element:
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["buyer"]}>
         <CartPage/>
       </ProtectedRoute>
     },
     {
       path:"/orders",
       element:
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["buyer"]}>
         <OrdersPage/>
       </ProtectedRoute>
     }

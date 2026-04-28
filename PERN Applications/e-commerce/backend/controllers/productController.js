@@ -21,7 +21,6 @@ const getMyProducts = async (req, res) => {
             where: { sellerId: req.user.id }, 
             order: [["createdAt", "DESC"]],
         });
-
         return res.status(200).json({ message:"Product Created",products });
     } catch (error) {
         console.error("Get my products error:", error);

@@ -45,6 +45,13 @@ const HomePage = () => {
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleProductDeleted = (productId) => {
+    setProducts((currentProducts) =>
+      currentProducts.filter((product) => product.id !== productId)
+    );
+    toast.success("Product deleted successfully");
+  };
   console.log("please clear confusion");
   console.log(filteredProducts);
 
@@ -90,7 +97,11 @@ const HomePage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onDelete={handleProductDeleted}
+                />
               ))
             ) : (
               <div className="col-span-full text-center text-slate-400 py-16">

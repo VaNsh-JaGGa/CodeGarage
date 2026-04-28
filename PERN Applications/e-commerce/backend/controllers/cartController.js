@@ -109,12 +109,11 @@ const getCart = async (req,res) => {
                 attributes: ["id", "name", "price", "stock", "image_url"]
             },],
         });
-
         //now try to find out the total price of the cart using the reduce method of array
         const totalPrice = cartItems.reduce((sum, item) => {
             return sum + parseFloat(item.product.price) * item.quantity;
+            // parsefloat -- build in method that converts a string into a number 
         }, 0)
-
         //return the response
         return res.status(200).json({
             cartItems,

@@ -15,6 +15,8 @@ const getMyOrders = async (req, res) => {
                 }],
             order: [["createdAt", "DESC"]],
         });
+        // console.log("orders on get request");
+        // console.log(orders);
         return res.status(200).json({ orders });
     }
     catch (err) {
@@ -50,14 +52,14 @@ const getOrderById = async (req, res) => {
 
 const placeOrder = async (req, res) => {
     const transaction = await sequelize.transaction();
-
     try {
         const cartItems = await Cart.findAll({
             where: { buyerId: req.user.id },
             include: [{ model: Product, as: "product" }],
             transaction,
         });
-
+        console.log("this is cartItems");
+        console.log(cartItems);
         if (cartItems.length === 0) {
             await transaction.rollback();
             return res.status(400).json({

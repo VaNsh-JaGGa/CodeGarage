@@ -17,9 +17,9 @@ const AdminDashboard = () => {
             try {
                 const headers = { Authorization: `Bearer ${token}` };
                 const [statsRes, usersRes, ordersRes] = await Promise.all([
-                    fetch("http://localhost:5000/api/admin/stats", { headers }),
-                    fetch("http://localhost:5000/api/admin/users", { headers }),
-                    fetch("http://localhost:5000/api/admin/orders", { headers }),
+                    fetch("http://localhost:5000/api/admin/stats", { headers }), // return the count of the user , product , and Order
+                    fetch("http://localhost:5000/api/admin/users", { headers }), // return all the users
+                    fetch("http://localhost:5000/api/admin/orders", { headers }),// return the details of order table and )( JOIN with User and User JOIN with OrderItem ).
                 ]);
                 const [statsData, usersData, ordersData] = await Promise.all([
                     statsRes.json(), usersRes.json(), ordersRes.json(),

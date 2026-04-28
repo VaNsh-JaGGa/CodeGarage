@@ -40,7 +40,6 @@ const CartPage = () => {
         setLoading(false);
         return;
       }
-
       try {
         await fetchCart();
       } catch (err) {
@@ -49,7 +48,6 @@ const CartPage = () => {
         setLoading(false);
       }
     };
-
     loadCart();
   }, [token]);
 
@@ -73,6 +71,7 @@ const CartPage = () => {
       }
 
       await fetchCart();
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       toast.error(err.message || "Failed to update quantity");
     }
@@ -95,6 +94,7 @@ const CartPage = () => {
 
       toast.success(`"${itemName}" removed from cart`);
       await fetchCart();
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       toast.error(err.message || "Failed to remove item");
     }
@@ -102,7 +102,6 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     setCheckingOut(true);
-
     try {
       const response = await fetch(`${API_BASE_URL}/order`, {
         method: "POST",
@@ -110,16 +109,16 @@ const CartPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       const data = await response.json();
-
+      console.log("data from placeorder API");
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Checkout failed");
       }
-
       toast.success("Order placed successfully!");
+      window.dispatchEvent(new Event("cartUpdated"));
       navigate("/orders");
-    } catch (err) {
+    } catch (err){
       toast.error(err.message || "Checkout failed");
     } finally {
       setCheckingOut(false);
