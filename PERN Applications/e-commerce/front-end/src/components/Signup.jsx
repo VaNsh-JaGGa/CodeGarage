@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { validateField, validateSignupForm } from "../utils/validation";
 import toast from 'react-hot-toast';
+import { User, Store, ShieldCheck, ChevronDown } from "lucide-react";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const SignupPage = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setPassword] = useState(false);
+  const [isRoleOpen, setIsRoleOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,19 +164,65 @@ const SignupPage = () => {
             </div>
             {fieldErrors.password && <p className="text-red-400 text-xs mt-1">{fieldErrors.password}</p>}
           </div>
-
-          <div>
-            <label className="block text-slate-300 text-sm font-medium mb-1">
-              Role
+          
+          <div className="relative">
+            <label className="block text-slate-300 text-sm font-medium mb-1.5 ml-1">
+              Select Role
             </label>
-            <select name="role" onChange={handleChange} value={formData.role} className={`w-full bg-white/5 border ${fieldErrors.role ? 'border-red-500' : 'border-white/10'} text-white placeholder-slate-500
-              rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500
-              focus:ring-1 focus:ring-blue-500 transition`}>
-              <option value="buyer" className="bg-slate-800">Buyer</option>
-              <option value="seller" className="bg-slate-800">Seller</option>
-              <option value="admin" className="bg-slate-800">Admin</option>
-            </select>
-            {fieldErrors.role && <p className="text-red-400 text-xs mt-1">{fieldErrors.role}</p>}
+            
+            {/* Clickable trigger area */}
+            <div 
+              onClick={() => setIsRoleOpen(!isRoleOpen)}
+              className={`w-full bg-white/5 border ${fieldErrors.role ? 'border-red-500' : 'border-white/10'} 
+                text-white flex items-center justify-between rounded-xl px-4 py-2.5 text-sm 
+                cursor-pointer hover:bg-white/10 transition-all duration-300 active:scale-[0.98]`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400">
+                  {formData.role === 'buyer' && <User size={16} />}
+                  {formData.role === 'seller' && <Store size={16} />}
+                  {formData.role === 'admin' && <ShieldCheck size={16} />}
+                </div>
+                <span className="capitalize font-medium">{formData.role}</span>
+              </div>
+              <ChevronDown 
+                size={18} 
+                className={`text-slate-400 transition-transform duration-300 ${isRoleOpen ? 'rotate-180' : ''}`} 
+              />
+            </div>
+            
+            {isRoleOpen && (
+              <div className="absolute z-20 w-full mt-2 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                {[
+                  { id: 'buyer', label: 'Buyer', icon: User },
+                  { id: 'seller', label: 'Seller', icon: Store },
+                  { id: 'admin', label: 'Admin', icon: ShieldCheck }
+                ].map((role) => (
+                  <div
+                    key={role.id}
+                    onClick={() => {
+                      setFormData({ ...formData, role: role.id });
+                      setIsRoleOpen(false);
+                    }}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors
+                      ${formData.role === role.id ? 'bg-blue-600/30 text-white' : 'text-slate-400 hover:bg-white/10 hover:text-white'}`}
+                  >
+                    <role.icon size={16} className={formData.role === role.id ? 'text-blue-400' : ''} />
+                    <span className="text-sm font-medium">{role.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {/* Click outside to close (Invisible Backdrop) */}
+            {isRoleOpen && (
+              <div 
+                className="fixed inset-0 z-10" 
+                onClick={() => setIsRoleOpen(false)}
+              ></div>
+            )}
+
+            {fieldErrors.role && <p className="text-red-400 text-xs mt-1.5 ml-1">{fieldErrors.role}</p>}
           </div>
 
           <button

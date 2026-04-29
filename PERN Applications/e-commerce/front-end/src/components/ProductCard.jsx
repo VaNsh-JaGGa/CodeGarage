@@ -1,15 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 // product = { id, name, description, price, stock, image_url, seller }
 const ProductCard = ({ product, onDelete }) => {
     const { token, user } = useAuth();
+    const navigate = useNavigate();
     const [added, setAdded] = useState(false);
     const [addingToCart, setAddingToCart] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    const handleAddToCart = async () => {
+    const openProductDetails = () => {
+        navigate(`/products/${product.id}`);
+    };
+
+    const handleAddToCart = async (e) => {
+        e.stopPropagation();
         setAddingToCart(true);
         try {
             const response = await fetch("http://localhost:5000/api/cart", {
@@ -33,7 +40,8 @@ const ProductCard = ({ product, onDelete }) => {
         }
     };
 
-    const handleDeleteProduct = async () => {
+    const handleDeleteProduct = async (e) => {
+        e.stopPropagation();
         if (!window.confirm("Delete this product?")) return;
 
         setDeleting(true);
@@ -62,7 +70,16 @@ const ProductCard = ({ product, onDelete }) => {
     return (
         <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden
         hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/10
-        transition duration-300 group flex flex-col">
+        transition duration-300 group flex flex-col cursor-pointer"
+            onClick={openProductDetails}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProductDetails();
+                }
+            }}>
 
             <div className="aspect-square bg-slate-800 overflow-hidden">
                 {product.image_url ? (

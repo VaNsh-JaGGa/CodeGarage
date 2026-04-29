@@ -9,6 +9,7 @@ import AdminDashboard from './components/AdminDashboard';
 import CartPage from './components/CartPage';
 import OrdersPage from './components/OrdersPage';
 import MyProducts from './components/MyProducts';
+import ProductDetails from './components/ProductDetails';
 
 const router = createBrowserRouter(
   [
@@ -45,6 +46,13 @@ const router = createBrowserRouter(
       element:
       <ProtectedRoute allowedRoles={["seller"]}>
         <MyProducts/>
+      </ProtectedRoute>
+    },
+    {
+      path:"/products/:id",
+      element:
+      <ProtectedRoute>
+        <ProductDetails/>
       </ProtectedRoute>
     },
     {
